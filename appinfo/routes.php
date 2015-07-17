@@ -20,6 +20,7 @@
 return [
     'routes' => [
 	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
-	   ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
+	   ['name' => 'page#do_restore_tables', 'url' => '/restore-tables', 'verb' => 'POST'],
+	   ['name' => 'page#do_fetch_tables', 'url' => '/fetch-tables', 'verb' => 'POST'],
     ]
 ];

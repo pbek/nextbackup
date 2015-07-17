@@ -11,6 +11,7 @@
 
 namespace OCA\OwnBackup\Controller;
 
+use OCA\OwnBackup\Service\BackupService;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;
@@ -20,33 +21,58 @@ class PageController extends Controller {
 
 
 	private $userId;
+	private $backupService;
 
-	public function __construct($AppName, IRequest $request, $UserId){
+	public function __construct($AppName, IRequest $request, BackupService $backupService, $UserId){
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
+		$this->backupService = $backupService;
 	}
 
 	/**
-	 * CAUTION: the @Stuff turns off security checks; for this page no admin is
-	 *          required and no CSRF check. If you don't know what CSRF is, read
-	 *          it up in the docs or you might create a security hole. This is
-	 *          basically the only required method to add this exemption, don't
-	 *          add it to any other method if you don't exactly know what it does
-	 *
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		$params = ['user' => $this->userId];
+		$timestampList = $this->backupService->fetchBackupTimestamps();
+
+		$dateTimeFormater = \OC::$server->query('DateTimeFormatter');
+		$dateHash = [];
+		foreach( $timestampList as $timestamp )
+		{
+			$dateHash[$timestamp] = $dateTimeFormater->formatDateTime( $timestamp );
+		}
+
+		$params = [
+			'backupDateHash' => $dateHash
+		];
+
 		return new TemplateResponse('ownbackup', 'main', $params);  // templates/main.php
 	}
 
 	/**
-	 * Simply method that posts back the payload of the request
-	 * @NoAdminRequired
+	 * Restores tables of array $tables
+	 *
+	 * @param array $tables
+	 * @return DataResponse
 	 */
-	public function doEcho($echo) {
-		return new DataResponse(['echo' => $echo]);
+	public function doRestoreTables( array $tables )
+	{
+		// TODO: implement restoring of tables
+
+		$message = "Sent tables: " . count( $tables );
+		return new DataResponse(['message' => $message]);
+	}
+
+	/**
+	 * Fetches the backup table names of a timestamp
+	 *
+	 * @param int $timestamp
+	 * @return DataResponse
+	 */
+	public function doFetchTables( $timestamp )
+	{
+		$tableList = $this->backupService->fetchTablesFromBackupTimestamp( $timestamp );
+		return new DataResponse(['tables' => $tableList]);
 	}
 
 

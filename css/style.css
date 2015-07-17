@@ -1,3 +1,16 @@
 #hello {
 	color: red;
 }
+
+#backup-tables-block {
+	display: none;
+}
+
+#backup-date-select {
+	width: 200px;
+}
+
+#backup-tables-select {
+	width: 300px;
+	height: auto;
+}
