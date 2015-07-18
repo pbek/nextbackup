@@ -9,6 +9,6 @@
     <namespace>OwnBackup</namespace>
     <category>other</category>
     <dependencies>
-        <owncloud min-version="8.0" />
+        <owncloud min-version="8.1" />
     </dependencies>
 </info>

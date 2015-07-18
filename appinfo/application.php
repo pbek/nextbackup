@@ -30,7 +30,7 @@ class Application extends App
 
                 // sorting weight for the navigation. The higher the number, the higher
                 // will it be listed in the navigation
-                'order' => 10,
+                'order' => 1,
 
                 // the route that will be shown on startup
                 'href' => $urlGenerator->linkToRoute('ownbackup.page.index'),

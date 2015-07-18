@@ -1,6 +1,6 @@
 # OwnBackup
 
-OwnBackup is the simple database backup solutions for your [ownCloud](http://www.owncloud.com/) installation.
+OwnBackup is the simple database backup solutions for your [ownCloud](http://www.owncloud.com/) 8.1+ installation.
 
 Place this app in your `owncloud/apps/` directory.
 
