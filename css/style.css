@@ -4,6 +4,7 @@
 
 #backup-tables-block {
 	display: none;
+	margin-top: 10px;
 }
 
 #backup-date-select {

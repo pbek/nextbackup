@@ -1,8 +1,6 @@
 <?php
-script('ownbackup', 'script');
-script('ownbackup', 'chosen.jquery.min');
-style('ownbackup', 'style');
-style('ownbackup', 'chosen.min');
+script('ownbackup', ['script', 'chosen.jquery.min']);
+style('ownbackup', ['style', 'chosen.min']);
 ?>
 
 <div id="app">

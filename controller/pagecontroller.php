@@ -19,7 +19,6 @@ use OCP\AppFramework\Controller;
 
 class PageController extends Controller {
 
-
 	private $userId;
 	private $backupService;
 
@@ -33,17 +32,8 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		$timestampList = $this->backupService->fetchBackupTimestamps();
-
-		$dateTimeFormatter = \OC::$server->query('DateTimeFormatter');
-		$dateHash = [];
-		foreach( $timestampList as $timestamp )
-		{
-			$dateHash[$timestamp] = $dateTimeFormatter->formatDateTime( $timestamp );
-		}
-
 		$params = [
-			'backupDateHash' => $dateHash
+			'backupDateHash' => $this->backupService->fetchFormattedBackupTimestampHash()
 		];
 
 		return new TemplateResponse('ownbackup', 'main', $params);  // templates/main.php
@@ -58,10 +48,17 @@ class PageController extends Controller {
 	 */
 	public function doRestoreTables( $timestamp, array $tables )
 	{
-		// restore tables
-		$this->backupService->restoreTables( $timestamp, $tables );
+		if ( is_array( $tables ) && ( count( $tables ) > 0 ) )
+		{
+			// restore tables
+			$this->backupService->doRestoreTables( $timestamp, $tables );
+			$message = count( $tables ) . " table(s) have been restored.";
+		}
+		else
+		{
+			$message = "No table have been restored.";
+		}
 
-		$message = count( $tables ) . " table(s) were restored.";
 		return new DataResponse(['message' => $message]);
 	}
 
@@ -77,5 +74,17 @@ class PageController extends Controller {
 		return new DataResponse(['tables' => $tableList]);
 	}
 
+	/**
+	 * Creates a new backup
+	 *
+	 * @return DataResponse
+	 */
+	public function doCreateBackup()
+	{
+		// create a new backup
+		$this->backupService->createDBBackup();
 
+		// return all backup timestamps as formatted hash
+		return new DataResponse(['timestamps' => $this->backupService->fetchFormattedBackupTimestampHash()]);
+	}
 }

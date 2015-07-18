@@ -13,15 +13,36 @@ namespace OCA\OwnBackup\Service;
 use Exception;
 use OCP\IDb;
 use OCA\OwnBackup\Service;
+use OCP\ILogger;
 
 class BackupService {
 
+    private $appName;
     private $db;
     private $configService;
+    private $logger;
+    private $userId;
 
-    public function __construct(IDb $db, ConfigService $configService){
+    // the minimal interval for backups [s]
+    const MIN_BACKUP_INTERVAL = 3600;
+
+
+    public function __construct($appName, IDb $db, ConfigService $configService, ILogger $logger, $userId){
+        $this->appName = $appName;
         $this->db = $db;
         $this->configService = $configService;
+        $this->logger = $logger;
+        $this->userId = $userId;
+    }
+
+    /**
+     * Returns the id of the user or the name of the app if no user is present (for example in a cronjob)
+     *
+     * @return string
+     */
+    public function getCallerName()
+    {
+        return is_null( $this->userId ) ? $this->appName : "user " . $this->userId;
     }
 
     /**
@@ -103,33 +124,43 @@ class BackupService {
      *
      * @throws Exception
      */
-    public function backupDB()
+    public function createDBBackup()
     {
         // get the names of all tables
         $tables = self::getTableNames();
         $timestamp = time();
 
-        $backupDir = $this->configService->getBackupBaseDirectory(). "/$timestamp";
-
-        // create new backup folder if it not exists
-        if ( !file_exists( $backupDir ) )
+        try
         {
-            if ( !mkdir( $backupDir ) )
+            $backupDir = $this->configService->getBackupBaseDirectory(). "/$timestamp";
+
+            // create new backup folder if it not exists
+            if ( !file_exists( $backupDir ) )
             {
-                throw new Exception( "Cannot create backup dir: $backupDir" );
+                if ( !mkdir( $backupDir ) )
+                {
+                    throw new Exception( "Cannot create backup dir: $backupDir" );
+                }
             }
+
+            foreach( $tables as $table )
+            {
+                $tableSql = self::getTableDumpSql( $table );
+
+                $tableBackupFile = "$backupDir/$table.sql";
+                // write db dump to sql file
+                if ( !file_put_contents( $tableBackupFile, $tableSql ) )
+                {
+                    throw new Exception( "Cannot write to backup file: $tableBackupFile" );
+                }
+            }
+
+            $this->logger->log( 10, $this->getCallerName() . " created a backup to '$backupDir'" );
         }
-
-        foreach( $tables as $table )
+        catch ( Exception $e )
         {
-            $tableSql = self::getTableDumpSql( $table );
-
-            $tableBackupFile = "$backupDir/$table.sql";
-            // write db dump to sql file
-            if ( !file_put_contents( $tableBackupFile, $tableSql ) )
-            {
-                throw new Exception( "Cannot write to backup file: $tableBackupFile" );
-            }
+            $this->logger->error( $this->getCallerName() . " thew an exception: " . $e->getMessage() );
+            throw( $e );
         }
     }
 
@@ -144,7 +175,7 @@ class BackupService {
         $backupBaseDir = $this->configService->getBackupBaseDirectory();
         $timestampList = array();
 
-        $fileList = scandir( $backupBaseDir );
+        $fileList = scandir( $backupBaseDir, 1 );
         foreach ( $fileList as $file )
         {
             // skip "." and ".."
@@ -163,6 +194,25 @@ class BackupService {
         }
 
         return $timestampList;
+    }
+
+    /**
+     * Fetches all backup timestamps as hash with formatted date strings
+     *
+     * @return array
+     */
+    public function fetchFormattedBackupTimestampHash()
+    {
+        $timestampList = $this->fetchBackupTimestamps();
+
+        $dateTimeFormatter = \OC::$server->query('DateTimeFormatter');
+        $dateHash = [];
+        foreach( $timestampList as $timestamp )
+        {
+            $dateHash[$timestamp] = $dateTimeFormatter->formatDateTime( $timestamp );
+        }
+
+        return $dateHash;
     }
 
     /**
@@ -205,7 +255,7 @@ class BackupService {
      * @param string $table
      * @throws Exception
      */
-    public function restoreTable( $timestamp, $table )
+    public function doRestoreTable( $timestamp, $table )
     {
         $backupSqlFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table.sql";
 
@@ -237,6 +287,7 @@ class BackupService {
         }
 
         $this->db->commit();
+        $this->logger->log( 10, $this->getCallerName() . " restored table '$table' from backup $timestamp" );
     }
 
     /**
@@ -246,16 +297,119 @@ class BackupService {
      * @param array $tables
      * @throws Exception
      */
-    public function restoreTables( $timestamp, $tables )
+    public function doRestoreTables( $timestamp, $tables )
     {
         $this->db->beginTransaction();
 
         foreach ( $tables as $table )
         {
             // restore a table
-            $this->restoreTable( $timestamp, $table );
+            $this->doRestoreTable( $timestamp, $table );
         }
 
         $this->db->commit();
+    }
+
+    /**
+     * Fetches the timestamp of the last backup
+     *
+     * @return int|bool
+     */
+    public function fetchLastBackupTimestamp()
+    {
+        // fetch all backup timestamps
+        $backupTimestamps = $this->fetchBackupTimestamps();
+
+        // sort them descending
+        rsort( $backupTimestamps );
+
+        return isset( $backupTimestamps[0] ) ? (int) $backupTimestamps[0] : false;
+    }
+
+    /**
+     * Checks if we need a new backup
+     *
+     * @return bool
+     */
+    public function needNewBackup()
+    {
+        return ( (int) $this->fetchLastBackupTimestamp() ) < ( time() - self::MIN_BACKUP_INTERVAL );
+    }
+
+    /**
+     * Expires all old backups
+     *
+     * @return array
+     */
+    public function expireOldBackups()
+    {
+        // fetch all backup timestamps
+        $backupTimestamps = $this->fetchBackupTimestamps();
+
+        $keepBackupTimestamps = [];
+        $time = time();
+
+        // keep all backups of the last 24h
+        foreach ( $backupTimestamps as $timestamp )
+        {
+            if ( $timestamp > ( $time - 86400 )  )
+            {
+                $keepBackupTimestamps[] = $timestamp;
+            }
+        }
+
+        // TODO: implement other cases
+
+        // keep at least one backup per day for one week
+
+        // keep at least one backup per week for one month
+
+        // keep at least one backup per month for one year
+
+        // keep one backup per year for 10 years
+
+        $removeBackupTimestamps = array_diff( $backupTimestamps, $keepBackupTimestamps );
+        $removedBackups = [];
+
+        // expire old backups
+        foreach ( $removeBackupTimestamps as $timestamp )
+        {
+            // remove backup
+            if ( $this->removeBackup( $timestamp ) )
+            {
+                $removedBackups[] = $timestamp;
+            }
+        }
+
+        return $removedBackups;
+    }
+
+    /**
+     * Removes a backup
+     *
+     * @param $timestamp
+     * @return bool
+     * @throws Exception
+     */
+    public function removeBackup( $timestamp )
+    {
+        $backupDir = $this->configService->getBackupBaseDirectory() . "/$timestamp";
+        $success = false;
+
+        if ( is_dir( $backupDir ) && is_writeable( $backupDir ) )
+        {
+            $success = rmdir( $backupDir );
+        }
+
+        if ( $success )
+        {
+            $this->logger->log( 10, $this->getCallerName() . " removed backup $timestamp" );
+        }
+        else
+        {
+            $this->logger->error( $this->getCallerName() . " could not remove backup directory '$backupDir'!" );
+        }
+
+        return $success;
     }
 }

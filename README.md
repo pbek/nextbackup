@@ -4,18 +4,18 @@ OwnBackup is the simple database backup solutions for your [ownCloud](http://www
 
 Place this app in your `owncloud/apps/` directory.
 
-Use this app at your own risk! Data loss may occur!
+## Disclaimer
+
+- Use this app at your own risk! Data loss may occur!
+- This app is no replacement for a more professional backup solution!
 
 ## Features
-- creates backups of your ownCloud tables via cronjob or manually
-- you are able to choose which tables from a certain backup you want to restore
+
+- OwnBackup creates backups of your ownCloud tables via cronjob or manually.
+- You are able to choose which tables from a certain backup you want to restore.
+- Currently all backups older than 24h will be removed by the cronjob.
 
 ## Limitations
-- currently OwnBackup only works with table that have non-binary field types, all values will be escaped as string in the backup
 
-## Running tests
-After [Installing PHPUnit](http://phpunit.de/getting-started.html) run:
-
-```bash
-phpunit -c phpunit.xml
-```
+- Currently OwnBackup only works with table that have non-binary field types, all values will be escaped as string in the backup!
+- Currently all users can access the app.

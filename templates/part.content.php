@@ -1,12 +1,3 @@
-<p><button id="hello">click me</button></p>
-
-<p><textarea id="echo-content">
-	Send this as ajax
-</textarea></p>
-<p><button id="echo">Send ajax request</button></p>
-
-Ajax response: <div id="echo-result"></div>
-
 <form class="section">
     <h2>
         <label for="backup-date-select"><?php p($l->t('Backup date'));?></label>
@@ -26,4 +17,7 @@ Ajax response: <div id="echo-result"></div>
         <select id="backup-tables-select" multiple="" name="tables" data-placeholder="<?php p($l->t('Select the tables to restore'));?>"></select>
         <input type="button" id="restore-button" value="<?php p($l->t('Restore tables'));?>">
     </div>
+    <p>
+        <input type="button" id="backup-button" value="<?php p($l->t('Create Backup'));?>">
+    </p>
 </form>

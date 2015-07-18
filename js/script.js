@@ -11,23 +11,48 @@
 (function ($, OC) {
 
 	$(document).ready(function () {
-		$('#hello').click(function () {
-			alert('Hello from your script file');
+		$('#backup-button').click(function () {
+			OCdialogs.confirm(
+				t('ownbackup_backup', 'Are you sure you want to create a new backup?'),
+				t('ownbackup_backup', 'Create backup?'),
+				function( confirmed )
+				{
+					if ( confirmed )
+					{
+						var url = OC.generateUrl('/apps/ownbackup/create-backup');
+
+						$.post(url).success(function (response) {
+							// update the backup date selector
+							updateSelectorHashItems($('#backup-date-select'), response.timestamps);
+
+							OCdialogs.alert( t('ownbackup_backup', 'A new backup has been created.'), t('ownbackup_backup', 'New backup') );
+						});
+					}
+				}
+			);
 		});
 
-		$('#restore-button').click(function () {
-			if ( confirm( "Are you sure you want to restore the selected tables?" ) )
-			{
-				var url = OC.generateUrl('/apps/ownbackup/restore-tables');
-				var data = {
-					timestamp: $('#backup-date-select').val(),
-					tables: $('#backup-tables-select').val()
-				};
+		$('#restore-button').click(function (){
 
-				$.post(url, data).success(function (response) {
-					$('#echo-result').text(response.message);
-				});
-			}
+			OCdialogs.confirm(
+				t('ownbackup_restore', 'Are you sure you want to restore the selected tables?'),
+				t('ownbackup_restore', 'Restore tables?'),
+				function( confirmed )
+				{
+					if ( confirmed )
+					{
+						var url = OC.generateUrl('/apps/ownbackup/restore-tables');
+						var data = {
+							timestamp: $('#backup-date-select').val(),
+							tables: $('#backup-tables-select').val()
+						};
+
+						$.post(url, data).success(function (response) {
+							OCdialogs.alert( response.message, t('ownbackup_restore', 'Tables restored') );
+						});
+					}
+				}
+			);
 		});
 
 		$('#backup-date-select').change( function() {
@@ -75,4 +100,34 @@
 		// update chosen selector
 		$selectBox.chosen().trigger( "chosen:updated" );
 	}
+
+	/**
+	 * Updates a single select box with items from a hash (object)
+	 *
+	 * @param $selectBox the select box to update
+	 * @param items the items to update it with
+	 */
+	function updateSelectorHashItems( $selectBox, items )
+	{
+		$selectBox.empty();
+		$selectBox.append( $("<option></option>") );
+
+		// try to add new items
+		for ( var key in items )
+		{
+			// check if key really exists
+			if ( items.hasOwnProperty( key ) )
+			{
+				var item = items[key];
+
+				// add new item
+				$selectBox.append( $("<option></option>")
+					.attr( "value", key ).text( item ) );
+			}
+		}
+
+		// update chosen selector
+		$selectBox.trigger( "chosen:updated" );
+	}
+
 })(jQuery, OC);
