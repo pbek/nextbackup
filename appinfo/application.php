@@ -41,7 +41,7 @@ class Application extends App
 
                 // the title of your application. This will be used in the
                 // navigation or on the settings page of your app
-                'name' => $l10n->t('Own Backup'),
+                'name' => $l10n->t('OwnBackup'),
             ];
         });
 

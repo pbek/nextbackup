@@ -1,15 +1,21 @@
-# Own Backup
-Place this app in **owncloud/apps/**
+# OwnBackup
 
-## Publish to App Store
+OwnBackup is the simple database backup solutions for your [ownCloud](http://www.owncloud.com/) installation.
 
-First get an account for the [App Store](http://apps.owncloud.com/) then run:
+Place this app in your `owncloud/apps/` directory.
 
-    make appstore_package
+Use this app at your own risk! Data loss may occur!
 
-The archive is located in build/artifacts/appstore and can then be uploaded to the App Store.
+## Features
+- creates backups of your ownCloud tables via cronjob or manually
+- you are able to choose which tables from a certain backup you want to restore
+
+## Limitations
+- currently OwnBackup only works with table that have non-binary field types, all values will be escaped as string in the backup
 
 ## Running tests
 After [Installing PHPUnit](http://phpunit.de/getting-started.html) run:
 
-    phpunit -c phpunit.xml
+```bash
+phpunit -c phpunit.xml
+```

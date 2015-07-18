@@ -20,6 +20,7 @@
 			{
 				var url = OC.generateUrl('/apps/ownbackup/restore-tables');
 				var data = {
+					timestamp: $('#backup-date-select').val(),
 					tables: $('#backup-tables-select').val()
 				};
 
@@ -47,8 +48,6 @@
 				updateSelectorArrayItems( $('#backup-tables-select'), response.tables );
 			});
 		} );
-
-		$()
 
 		$('.chosen-select').chosen();
 	});

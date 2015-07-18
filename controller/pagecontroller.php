@@ -35,11 +35,11 @@ class PageController extends Controller {
 	public function index() {
 		$timestampList = $this->backupService->fetchBackupTimestamps();
 
-		$dateTimeFormater = \OC::$server->query('DateTimeFormatter');
+		$dateTimeFormatter = \OC::$server->query('DateTimeFormatter');
 		$dateHash = [];
 		foreach( $timestampList as $timestamp )
 		{
-			$dateHash[$timestamp] = $dateTimeFormater->formatDateTime( $timestamp );
+			$dateHash[$timestamp] = $dateTimeFormatter->formatDateTime( $timestamp );
 		}
 
 		$params = [
@@ -50,16 +50,18 @@ class PageController extends Controller {
 	}
 
 	/**
-	 * Restores tables of array $tables
+	 * Restores tables of array $tables for timestamp $timestamp
 	 *
+	 * @param int $timestamp
 	 * @param array $tables
 	 * @return DataResponse
 	 */
-	public function doRestoreTables( array $tables )
+	public function doRestoreTables( $timestamp, array $tables )
 	{
-		// TODO: implement restoring of tables
+		// restore tables
+		$this->backupService->restoreTables( $timestamp, $tables );
 
-		$message = "Sent tables: " . count( $tables );
+		$message = count( $tables ) . " table(s) were restored.";
 		return new DataResponse(['message' => $message]);
 	}
 

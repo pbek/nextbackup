@@ -85,7 +85,7 @@ class BackupService {
             $valueList = array();
             foreach( $row as $value )
             {
-                // TODO: make this binary compatible
+                // TODO: make this compatible with binary file types <http://www.php.net/manual/en/pdostatement.getcolumnmeta.php>
                 $valueList[] = $this->db->quote( $value );
             }
 
@@ -165,6 +165,13 @@ class BackupService {
         return $timestampList;
     }
 
+    /**
+     * Fetches all table names of the backup with a certain timestamp
+     *
+     * @param int $timestamp
+     * @return array
+     * @throws Exception
+     */
     public function fetchTablesFromBackupTimestamp( $timestamp )
     {
         $backupDir = $this->configService->getBackupBaseDirectory() . "/$timestamp";
@@ -189,5 +196,66 @@ class BackupService {
         }
 
         return $tableList;
+    }
+
+    /**
+     * Restores a table for a timestamp
+     *
+     * @param int $timestamp
+     * @param string $table
+     * @throws Exception
+     */
+    public function restoreTable( $timestamp, $table )
+    {
+        $backupSqlFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table.sql";
+
+        if ( !is_file( $backupSqlFile ) || !is_readable( $backupSqlFile ) )
+        {
+            throw new Exception( "Cannot read backup sql file: $backupSqlFile" );
+        }
+
+        // get the content of the sql file and add a \n on the end for splitting
+        $sqlDump = file_get_contents( $backupSqlFile ) . "\n";
+
+        // get all statements from the sql file
+        $sqlStatements = explode( ";\n", $sqlDump );
+
+        $this->db->beginTransaction();
+
+        // execute all sql statements
+        foreach ( $sqlStatements as $sqlStatement )
+        {
+            $sqlStatement = trim( $sqlStatement );
+            if ( $sqlStatement == "" )
+            {
+                continue;
+            }
+
+            // execute a sql statement
+            $query = $this->db->prepareQuery( $sqlStatement );
+            $query->execute();
+        }
+
+        $this->db->commit();
+    }
+
+    /**
+     * Restores a list of tables for a timestamp
+     *
+     * @param int $timestamp
+     * @param array $tables
+     * @throws Exception
+     */
+    public function restoreTables( $timestamp, $tables )
+    {
+        $this->db->beginTransaction();
+
+        foreach ( $tables as $table )
+        {
+            // restore a table
+            $this->restoreTable( $timestamp, $table );
+        }
+
+        $this->db->commit();
     }
 }
