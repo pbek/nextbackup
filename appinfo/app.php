@@ -11,4 +11,6 @@
 
 namespace OCA\OwnBackup\AppInfo;
 
-//$container = new Application();
+use OCA\OwnBackup\Jobs\BackupJob;
+
+\OC::$server->getJobList()->add( new BackupJob() );

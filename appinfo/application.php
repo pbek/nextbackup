@@ -44,7 +44,5 @@ class Application extends App
                 'name' => $l10n->t('OwnBackup'),
             ];
         });
-
-//        \OCP\Backgroundjob::addRegularTask('\OCA\OwnBackup\Cron\Backup', 'run');
     }
 }
