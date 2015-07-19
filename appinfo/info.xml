@@ -10,6 +10,7 @@
     <namespace>OwnBackup</namespace>
     <category>tool</category>
     <namespace>OwnBackup</namespace>
+    <ocsid>170674</ocsid>
 
     <!-- resources -->
     <website>https://github.com/pbek/ownbackup</website>

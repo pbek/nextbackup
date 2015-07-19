@@ -1,2 +1,2 @@
-owncloud-ownbackup (0.0.1)
+owncloud-ownbackup (0.1)
 * First release
