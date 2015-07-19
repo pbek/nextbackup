@@ -1,14 +1,43 @@
 <?xml version="1.0"?>
 <info>
+    <!-- metadata -->
     <id>ownbackup</id>
     <name>OwnBackup</name>
-    <description>OwnBackup is the simple database backup solutions for your ownCloud 8.1+ installation.</description>
+    <description>OwnBackup is the simple database backup solutions for your ownCloud 8.1+ installation. Use this app at your own risk! Data loss may occur! This app is no replacement for a more professional backup solution!</description>
     <licence>AGPL</licence>
     <author>Patrizio Bekerle</author>
     <version>0.0.1</version>
     <namespace>OwnBackup</namespace>
     <category>other</category>
+    <namespace>OwnBackup</namespace>
+    <ocsid></ocsid>
+
+    <!-- resources -->
+    <website>https://github.com/pbek/ownbackup</website>
+    <bugs>https://github.com/pbek/ownbackup/issues</bugs>
+    <repository type="git">https://github.com/pbek/ownbackup.git</repository>
+
+    <!-- dependencies -->
+    <requiremin>8.1</requiremin>
     <dependencies>
-        <owncloud min-version="8.1" />
+        <owncloud min-version="8.1" max-version="8.2"/>
+        <php min-version="5.4" />
+        <lib>zlib</lib>
+        <database>pgsql</database>
+        <database>sqlite</database>
+        <database>mysql</database>
     </dependencies>
+
+    <!-- navigation -->
+    <navigation>
+        <route>ownbackup.page.index</route>
+        <order>100</order>
+        <icon>app.svg</icon>
+        <name>OwnBackup</name>
+    </navigation>
+
+    <!-- cron jobs -->
+    <cron>
+        <job>OCA\OwnBackup\Jobs\BackupJob</job>
+    </cron>
 </info>
