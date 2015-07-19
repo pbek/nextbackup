@@ -8,9 +8,14 @@
     <author>Patrizio Bekerle</author>
     <version>0.1</version>
     <namespace>OwnBackup</namespace>
-    <category>tool</category>
+    <category>tools</category>
     <namespace>OwnBackup</namespace>
     <ocsid>170674</ocsid>
+
+    <!-- documentation -->
+    <documentation>
+        <admin>https://github.com/pbek/ownbackup</admin>
+    </documentation>
 
     <!-- resources -->
     <website>https://github.com/pbek/ownbackup</website>
