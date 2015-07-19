@@ -2,7 +2,7 @@
 <info>
     <id>ownbackup</id>
     <name>OwnBackup</name>
-    <description>ownCloud backup tool</description>
+    <description>OwnBackup is the simple database backup solutions for your ownCloud 8.1+ installation.</description>
     <licence>AGPL</licence>
     <author>Patrizio Bekerle</author>
     <version>0.0.1</version>

@@ -98,7 +98,7 @@
 		}
 
 		// update chosen selector
-		$selectBox.chosen().trigger( "chosen:updated" );
+		$selectBox.chosen({ search_contains: true }).trigger( "chosen:updated" );
 	}
 
 	/**
