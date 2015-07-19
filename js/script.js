@@ -20,16 +20,33 @@
 					if ( confirmed )
 					{
 						var url = OC.generateUrl('/apps/ownbackup/create-backup');
+						// show a message
+						$('#backup-message').show();
 
 						$.post(url).success(function (response) {
 							// update the backup date selector
-							updateSelectorHashItems($('#backup-date-select'), response.timestamps);
+							updateSelectorHashItems( $('#backup-date-select'), response.timestamps, true );
+
+							// hide message
+							$('#backup-message').hide();
 
 							OCdialogs.alert( t('ownbackup_backup', 'A new backup has been created.'), t('ownbackup_backup', 'New backup') );
 						});
 					}
 				}
 			);
+		});
+
+		$('#select-all-tables-button').click(function () {
+			var $select = $('#backup-tables-select');
+			$select.find('option').attr('selected', 'selected');
+			$select.trigger('chosen:updated');
+		});
+
+		$('#deselect-all-tables-button').click(function () {
+			var $select = $('#backup-tables-select');
+			$select.find('option:selected').removeAttr('selected');
+			$select.trigger('chosen:updated');
 		});
 
 		$('#restore-button').click(function (){
@@ -41,6 +58,9 @@
 				{
 					if ( confirmed )
 					{
+						// show a message
+						$('#restore-message').show();
+
 						var url = OC.generateUrl('/apps/ownbackup/restore-tables');
 						var data = {
 							timestamp: $('#backup-date-select').val(),
@@ -48,6 +68,9 @@
 						};
 
 						$.post(url, data).success(function (response) {
+							// hide message
+							$('#restore-message').hide();
+
 							OCdialogs.alert( response.message, t('ownbackup_restore', 'Tables restored') );
 						});
 					}
@@ -70,11 +93,12 @@
 
 			$.post(url, data).success(function (response) {
 				$('#backup-tables-block').show();
-				updateSelectorArrayItems( $('#backup-tables-select'), response.tables );
+				updateSelectorArrayItems( $('#backup-tables-select'), response.tables, false );
 			});
 		} );
 
 		$('.chosen-select').chosen();
+		$('button.icon-button').tipsy();
 	});
 
 	/**
@@ -82,11 +106,21 @@
 	 *
 	 * @param $selectBox the select box to update
 	 * @param items the items to update it with
+	 * @param addEmptyOption
 	 */
-	function updateSelectorArrayItems( $selectBox, items )
+	function updateSelectorArrayItems( $selectBox, items, addEmptyOption )
 	{
+		if ( addEmptyOption == undefined )
+		{
+			addEmptyOption = false;
+		}
+
 		$selectBox.empty();
-		$selectBox.append( $("<option></option>") );
+
+		if ( addEmptyOption )
+		{
+			$selectBox.append( $("<option></option>") );
+		}
 
 		// try to add new items
 		for ( var i = 0; i < items.length; i++ )
@@ -106,11 +140,21 @@
 	 *
 	 * @param $selectBox the select box to update
 	 * @param items the items to update it with
+	 * @param addEmptyOption
 	 */
-	function updateSelectorHashItems( $selectBox, items )
+	function updateSelectorHashItems( $selectBox, items, addEmptyOption )
 	{
+		if ( addEmptyOption == undefined )
+		{
+			addEmptyOption = false;
+		}
+
 		$selectBox.empty();
-		$selectBox.append( $("<option></option>") );
+
+		if ( addEmptyOption )
+		{
+			$selectBox.append( $("<option></option>") );
+		}
 
 		// try to add new items
 		for ( var key in items )
