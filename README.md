@@ -16,6 +16,7 @@ Place this app in your `owncloud/apps/` directory.
 - OwnBackup creates backups of your ownCloud tables hourly via cronjob or manually.
 - You are able to choose which tables from a certain backup you want to restore.
 - Currently all backups older than 24h will be removed by the cronjob.
+- If the Zlib library is present the backups get compressed by gzip.
 
 ## Limitations
 
@@ -23,3 +24,4 @@ Place this app in your `owncloud/apps/` directory.
 - Currently all users can access the app.
 - I've only tested the app with MySQL so far, please report any troubles with other databases.
 - I've only tested the app with *Cron* so far, please report any troubles with *Webcron* or *AJAX*.
+- One main limitation for the size that your DB can have to be backed up will be the `memory_limit` and the `max_execution_time` of your PHP installation!

@@ -147,9 +147,9 @@ class BackupService {
             {
                 $tableSql = self::getTableDumpSql( $table );
 
-                $tableBackupFile = "$backupDir/$table.sql";
-                // write db dump to sql file
-                if ( !file_put_contents( $tableBackupFile, $tableSql ) )
+                $tableBackupFile = "$backupDir/$table.backup";
+                // write the db dump (possibly compressed) to the backup file
+                if ( !file_put_contents( $tableBackupFile, $this->tryToCompressString( $tableSql ) ) )
                 {
                     throw new Exception( "Cannot write to backup file: $tableBackupFile" );
                 }
@@ -241,7 +241,7 @@ class BackupService {
             // only add files to the list
             if ( is_file( $fullFileName ) && is_readable( $fullFileName ) )
             {
-                $tableList[] = str_replace( ".sql", "", $file );
+                $tableList[] = str_replace( ".backup", "", $file );
             }
         }
 
@@ -257,15 +257,15 @@ class BackupService {
      */
     public function doRestoreTable( $timestamp, $table )
     {
-        $backupSqlFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table.sql";
+        $backupSqlFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table.backup";
 
         if ( !is_file( $backupSqlFile ) || !is_readable( $backupSqlFile ) )
         {
             throw new Exception( "Cannot read backup sql file: $backupSqlFile" );
         }
 
-        // get the content of the sql file and add a \n on the end for splitting
-        $sqlDump = file_get_contents( $backupSqlFile ) . "\n";
+        // get the content of the sql file (try to un-compress it) and add a \n on the end for splitting
+        $sqlDump = $this->tryToUncompressString( file_get_contents( $backupSqlFile ) ) . "\n";
 
         // get all statements from the sql file
         $sqlStatements = explode( ";\n", $sqlDump );
@@ -411,5 +411,45 @@ class BackupService {
         }
 
         return $success;
+    }
+
+    /**
+     * Attempts to compress a string
+     *
+     * @param $text
+     * @return string
+     */
+    private function tryToCompressString( $text )
+    {
+        if ( function_exists( "gzencode" ) )
+        {
+            $compressedText = gzencode( $text );
+            if ( $compressedText !== false )
+            {
+                return $compressedText;
+            }
+        }
+
+        return $text;
+    }
+
+    /**
+     * Attempts to uncompress a string
+     *
+     * @param $compressedText
+     * @return string
+     */
+    private function tryToUncompressString( $compressedText )
+    {
+        if ( function_exists( "gzdecode" ) )
+        {
+            $text = gzdecode( $compressedText );
+            if ( $text !== false )
+            {
+                return $text;
+            }
+        }
+
+        return $compressedText;
     }
 }
