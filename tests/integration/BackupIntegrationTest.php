@@ -32,7 +32,7 @@ class BackupIntegrationTest extends TestCase {
 
     // the table we want to test
     const TEST_TABLE_NO_PREFIX = "jobs";
-    const TEST_TABLE = "oc_" . self::TEST_TABLE_NO_PREFIX;
+    const TEST_TABLE = "oc_jobs";
 
 
     public function setUp() {
