@@ -472,7 +472,7 @@ class BackupService {
 
         if ( is_dir( $backupDir ) && is_writeable( $backupDir ) )
         {
-            $success = rmdir( $backupDir );
+            $success = $this->recursivelyRemoveDir( $backupDir );
         }
 
         if ( $success )
@@ -525,5 +525,28 @@ class BackupService {
         }
 
         return $compressedText;
+    }
+
+    /**
+     * Recursively removes a directory
+     *
+     * @param string $dir
+     * @return bool
+     */
+    public function recursivelyRemoveDir( $dir )
+    {
+        $success = false;
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (filetype($dir."/".$object) == "dir") $this->recursivelyRemoveDir($dir."/".$object); else unlink($dir."/".$object);
+                }
+            }
+            reset($objects);
+            $success = rmdir($dir);
+        }
+
+        return $success;
     }
 }

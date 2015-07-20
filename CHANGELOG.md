@@ -6,3 +6,6 @@
 ## v0.2
 * The backup and restore process was completely rewritten, the new backup sets are incompatible with version 0.1 backup sets! 
 * The app should work with all databases and data types now, please report any problems. 
+
+## v0.2.1
+* Fixed removing of old backups 
