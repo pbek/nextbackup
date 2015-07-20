@@ -1,5 +1,8 @@
 # OwnBackup
 
+[![Build Status](https://travis-ci.org/pbek/ownbackup.svg?branch=master)](https://travis-ci.org/pbek/ownbackup)
+
+
 OwnBackup is the simple database backup solutions for your [ownCloud](http://www.owncloud.com/) 8.1+ installation.
 
 It's main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.  
