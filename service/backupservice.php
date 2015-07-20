@@ -46,7 +46,7 @@ class BackupService {
     }
 
     /**
-     * Returns the complete serialized dump of a table
+     * Returns the complete serialized dump of a table without field names
      *
      * @param $table
      * @return array
@@ -57,7 +57,10 @@ class BackupService {
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute();
 
-        return serialize( $result->fetchAll() );
+        return serialize( array_map( function( $array ) {
+            // we want no field names, just the values, to safe space
+            return array_values( $array );
+        }, $result->fetchAll() ) );
     }
 
     /**
@@ -281,16 +284,63 @@ class BackupService {
             throw new Exception( "Data dump is no array in file: $dataDumpFile" );
         }
 
+        // generate the field name list from the table structure file
+        $fieldList = $this->getFieldListFromTableStructureFile( $structureFile );
+
         // insert all the data
         $connection = \OC_DB::getConnection();
-        foreach( $dataDump as $fields )
-        {
-            $connection->insertIfNotExist( $table, $fields );
-        }
 
+        foreach( $dataDump as $dataLine )
+        {
+            $dataHash = [];
+
+            // generate the data hash
+            foreach ( $fieldList as $key => $fieldName )
+            {
+                // we want to add the field names again, that we left out to save space
+                $dataHash[$fieldName] = $dataLine[$key];
+            }
+
+            // insert the data into table
+            $connection->insertIfNotExist( $table, $dataHash );
+        }
         $this->db->commit();
 
         $this->logger->log( 10, $this->getCallerName() . " restored table '$table' from backup $timestamp" );
+    }
+
+    /**
+     * Generates a field name list from a table structure file
+     *
+     * @param string $tableStructureFile
+     * @return array
+     */
+    public function getFieldListFromTableStructureFile( $tableStructureFile )
+    {
+        // create a xml object from table structure
+        $loadEntities = libxml_disable_entity_loader(false);
+        $xml = simplexml_load_file( $tableStructureFile );
+        libxml_disable_entity_loader($loadEntities);
+
+        $fieldList = [];
+
+        /** @var \SimpleXMLElement $tableDeclaration */
+        $tableDeclaration = $xml->table->declaration;
+
+        /** @var \SimpleXMLElement $child */
+        foreach( $tableDeclaration->children() as $child )
+        {
+            // skip everything but fields
+            if ( $child->getName() != "field" )
+            {
+                continue;
+            }
+
+            $fieldName = (string) $child->name;
+            $fieldList[] = $fieldName;
+        }
+
+        return $fieldList;
     }
 
     /**

@@ -14,8 +14,6 @@ env:
 matrix:
   allow_failures:
     - php: hhvm
-    - env: DB=pgsql
-    - env: DB=sqlite
   include:
     - php: 5.4
       env: DB=sqlite
