@@ -14,11 +14,12 @@ env:
 matrix:
   allow_failures:
     - php: hhvm
-#  include:
-#    - php: 5.4
-#      env: DB=sqlite
-#    - php: 5.4
-#      env: DB=pgsql
+    - env: DB=pgsql
+  include:
+    - php: 5.4
+      env: DB=sqlite
+    - php: 5.4
+      env: DB=pgsql
 
 
 install:
@@ -48,3 +49,6 @@ before_script:
 script:
   - phpunit -c phpunit.xml
   - phpunit -c phpunit.integration.xml
+
+addons:
+    postgresql: "9.3"
