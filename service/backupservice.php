@@ -46,88 +46,28 @@ class BackupService {
     }
 
     /**
-     * Returns all table names of the ownCloud database
+     * Returns the complete serialized dump of a table
      *
+     * @param $table
      * @return array
      */
-    public function getTableNames()
+    public function getTableSerializedDataDump( $table )
     {
-        $sql = "SHOW TABLES";
-        $query = $this->db->prepareQuery($sql);
-        $result = $query->execute();
-
-        $resultList = array();
-        while ($row = $result->fetchRow())
-        {
-            $rowValues = array_values( $row );
-            $resultList[] = $rowValues[0];
-        }
-
-        return $resultList;
-    }
-
-    /**
-     * Returns the create statement of a table
-     *
-     * @param $table
-     * @return bool|string
-     */
-    public function getTableCreate( $table )
-    {
-        $sql = "SHOW CREATE TABLE $table";
-        $query = $this->db->prepareQuery($sql);
-        $result = $query->execute();
-
-        if ( $row = $result->fetchRow() )
-        {
-            return $row["Create Table"] . ";";
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns the complete dump of a table
-     *
-     * @param $table
-     * @return string
-     */
-    public function getTableDumpSql( $table )
-    {
-        $tableCreateSql = self::getTableCreate( $table );
-
         $sql = "SELECT * FROM $table";
         $query = $this->db->prepareQuery($sql);
         $result = $query->execute();
 
-        $rowSqlList = array();
-        while ( $row = $result->fetchRow() )
-        {
-            $valueList = array();
-            foreach( $row as $value )
-            {
-                // TODO: make this compatible with binary file types <http://www.php.net/manual/en/pdostatement.getcolumnmeta.php>
-                $valueList[] = $this->db->quote( $value );
-            }
-
-            $rowSql = "INSERT INTO $table VALUES(" . implode( ",", $valueList ) . ");";
-            $rowSqlList[] = $rowSql;
-        }
-
-        $tableSql = "DROP TABLE IF EXISTS $table;\n\n$tableCreateSql\n\n" . implode( "\n", $rowSqlList );
-
-        return $tableSql;
+        return serialize( $result->fetchAll() );
     }
 
     /**
      * Runs a backup of all tables to sql files
      *
      * @throws Exception
+     * @return int timestamp of backup
      */
     public function createDBBackup()
     {
-        // get the names of all tables
-        $tables = self::getTableNames();
         $timestamp = time();
 
         try
@@ -143,19 +83,68 @@ class BackupService {
                 }
             }
 
-            foreach( $tables as $table )
-            {
-                $tableSql = self::getTableDumpSql( $table );
+            $structureFile = "$backupDir/structure.xml";
 
-                $tableBackupFile = "$backupDir/$table.backup";
-                // write the db dump (possibly compressed) to the backup file
-                if ( !file_put_contents( $tableBackupFile, $this->tryToCompressString( $tableSql ) ) )
+            // get the db structure
+            if ( !\OC_DB::getDbStructure( $structureFile ) )
+            {
+                throw new Exception( "Cannot create db structure in file: $structureFile" );
+            }
+
+            // create a xml object from db structure
+            $loadEntities = libxml_disable_entity_loader(false);
+            $xml = simplexml_load_file( $structureFile );
+            libxml_disable_entity_loader($loadEntities);
+
+            $charset = (string) $xml->charset;
+
+            /** @var \SimpleXMLElement $child */
+            foreach ($xml->children() as $child)
+            {
+                // skip everything but tables
+                if ( $child->getName() != "table" )
                 {
-                    throw new Exception( "Cannot write to backup file: $tableBackupFile" );
+                    continue;
                 }
+
+                // find the table name
+                $tableName = (string) $child->name;
+
+                if ( $tableName == "" )
+                {
+                    throw new Exception( "No table name was set!" );
+                }
+
+                // build a structure xml for a single table
+                $xmlDump = "<database><name>*dbname*</name><create>true</create><overwrite>false</overwrite><charset>$charset</charset>" . $child->asXML() . "</database>";
+
+                // get name of table directory
+                $tableDir = "$backupDir/$tableName";
+
+                // create table directory if it not exists
+                if ( !file_exists( $tableDir ) )
+                {
+                    if ( !mkdir( $tableDir ) )
+                    {
+                        throw new Exception( "Cannot create table dir: $tableDir" );
+                    }
+                }
+
+                // write structure to table structure file
+                $tableStructureFile = "$tableDir/structure.xml";
+                file_put_contents( $tableStructureFile, $xmlDump );
+
+                // get a serialized dump of the table
+                $tableDump = $this->getTableSerializedDataDump( $tableName );
+
+                // write dump to table data file (compressed if possible)
+                $tableDataFile = "$tableDir/data.dump";
+                file_put_contents( $tableDataFile, $this->tryToCompressString( $tableDump ) );
             }
 
             $this->logger->log( 10, $this->getCallerName() . " created a backup to '$backupDir'" );
+
+            return $timestamp;
         }
         catch ( Exception $e )
         {
@@ -212,6 +201,7 @@ class BackupService {
             $dateHash[$timestamp] = $dateTimeFormatter->formatDateTime( $timestamp );
         }
 
+
         return $dateHash;
     }
 
@@ -238,10 +228,10 @@ class BackupService {
 
             $fullFileName = "$backupDir/$file";
 
-            // only add files to the list
-            if ( is_file( $fullFileName ) && is_readable( $fullFileName ) )
+            // only add directories to the list
+            if ( is_dir( $fullFileName ) && is_readable( $fullFileName ) )
             {
-                $tableList[] = str_replace( ".backup", "", $file );
+                $tableList[] = $file;
             }
         }
 
@@ -257,37 +247,71 @@ class BackupService {
      */
     public function doRestoreTable( $timestamp, $table )
     {
-        $backupSqlFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table.backup";
-
-        if ( !is_file( $backupSqlFile ) || !is_readable( $backupSqlFile ) )
-        {
-            throw new Exception( "Cannot read backup sql file: $backupSqlFile" );
-        }
-
-        // get the content of the sql file (try to un-compress it) and add a \n on the end for splitting
-        $sqlDump = $this->tryToUncompressString( file_get_contents( $backupSqlFile ) ) . "\n";
-
-        // get all statements from the sql file
-        $sqlStatements = explode( ";\n", $sqlDump );
+        // get the table structure file name
+        $structureFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table/structure.xml";
 
         $this->db->beginTransaction();
 
-        // execute all sql statements
-        foreach ( $sqlStatements as $sqlStatement )
+        if ( !is_file( $structureFile ) || !is_readable( $structureFile ) )
         {
-            $sqlStatement = trim( $sqlStatement );
-            if ( $sqlStatement == "" )
-            {
-                continue;
-            }
+            throw new Exception( "Cannot read table structure file: $structureFile" );
+        }
 
-            // execute a sql statement
-            $query = $this->db->prepareQuery( $sqlStatement );
-            $query->execute();
+        // drops the table
+        $this->dropTable( $table );
+
+        // update the table structure
+        if ( !\OC_DB::updateDbFromStructure( $structureFile ) )
+        {
+            throw new Exception( "Cannot restore table structure from file: $structureFile" );
+        }
+
+        // get the data dump file name
+        $dataDumpFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table/data.dump";
+
+        if ( !is_file( $dataDumpFile ) || !is_readable( $dataDumpFile ) )
+        {
+            throw new Exception( "Cannot read table data dump file: $dataDumpFile" );
+        }
+
+        // try to get the data dump
+        $dataDump = unserialize( $this->tryToUncompressString( file_get_contents( $dataDumpFile ) ) );
+        if ( !is_array( $dataDump ) )
+        {
+            throw new Exception( "Data dump is no array in file: $dataDumpFile" );
+        }
+
+        // insert all the data
+        $connection = \OC_DB::getConnection();
+        foreach( $dataDump as $fields )
+        {
+            $connection->insertIfNotExist( $table, $fields );
         }
 
         $this->db->commit();
+
         $this->logger->log( 10, $this->getCallerName() . " restored table '$table' from backup $timestamp" );
+    }
+
+    /**
+     * Drops a table
+     *
+     * @param $table
+     * @return mixed
+     * @throws Exception
+     */
+    public function dropTable( $table )
+    {
+        // remove the prefix from the table name
+        $filterExpression = '/^' . preg_quote( $this->configService->getSystemValue( 'dbtableprefix', 'oc_' ) ) . '/';
+        $tableNoPrefix = preg_replace( $filterExpression, "", $table );
+
+        if ( $tableNoPrefix == "" )
+        {
+            throw new Exception( "Cannot remove prefix from table name: $table" );
+        }
+
+        return $this->db->dropTable( $tableNoPrefix );
     }
 
     /**
