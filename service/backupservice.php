@@ -114,7 +114,7 @@ class BackupService {
             $rowSqlList[] = $rowSql;
         }
 
-        $tableSql = "DROP TABLE $table;\n\n$tableCreateSql\n\n" . implode( "\n", $rowSqlList );
+        $tableSql = "DROP TABLE IF EXISTS $table;\n\n$tableCreateSql\n\n" . implode( "\n", $rowSqlList );
 
         return $tableSql;
     }
