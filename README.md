@@ -22,6 +22,6 @@ Place this app in your `owncloud/apps/` directory.
 
 - Currently OwnBackup only works with table that have non-binary field types, all values will be escaped as string in the backup!
 - Currently all users can access the app.
-- I've only tested the app with MySQL so far, please report any troubles with other databases.
+- The app only works with MySQL so far.
 - I've only tested the app with *Cron* so far, please report any troubles with *Webcron* or *AJAX*.
 - One main limitation for the size that your DB can have to be backed up will be the `memory_limit` and the `max_execution_time` of your PHP installation!

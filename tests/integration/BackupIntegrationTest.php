@@ -10,7 +10,7 @@
  */
 
 use OCA\OwnBackup\Service\BackupService;
-use OCP\AppFramework\App;
+use OCA\OwnBackup\AppInfo\Application;
 use OCP\IDb;
 use Test\TestCase;
 
@@ -31,12 +31,13 @@ class BackupIntegrationTest extends TestCase {
     private $db;
 
     // the table we want to test
-    const TEST_TABLE = "oc_jobs";
+    const TEST_TABLE_NO_PREFIX = "jobs";
+    const TEST_TABLE = "oc_" . self::TEST_TABLE_NO_PREFIX;
 
 
     public function setUp() {
         parent::setUp();
-        $app = new App('ownbackup');
+        $app = new Application();
         $this->container = $app->getContainer();
 
         $this->backupService = $this->container->query('OCA\OwnBackup\Service\BackupService');
@@ -75,12 +76,10 @@ class BackupIntegrationTest extends TestCase {
         $this->assertEquals( 1, count( $timestampList ) );
 
         // drop table
-        $sql = "DROP TABLE " . self::TEST_TABLE;
-        $query = $this->db->prepareQuery($sql);
-        $query->execute();
+        $this->db->dropTable( self::TEST_TABLE_NO_PREFIX );
 
         // check if table is gone
-        $tableExists = $this->checkIfTableExists( self::TEST_TABLE );
+        $tableExists = $this->db->tableExists( self::TEST_TABLE_NO_PREFIX );
         $this->assertEquals( false, $tableExists );
 
         // restore table
@@ -89,7 +88,7 @@ class BackupIntegrationTest extends TestCase {
         $this->backupService->doRestoreTables( $timestamp, $tableList );
 
         // check if table is present again
-        $tableExists = $this->checkIfTableExists( self::TEST_TABLE );
+        $tableExists = $this->db->tableExists( self::TEST_TABLE_NO_PREFIX );
         $this->assertEquals( true, $tableExists );
     }
 
