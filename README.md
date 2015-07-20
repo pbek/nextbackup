@@ -19,7 +19,7 @@ Place this app in your `owncloud/apps/` directory.
 - OwnBackup creates backups of your ownCloud tables hourly via cronjob or manually.
 - You are able to choose which tables from a certain backup you want to restore.
 - Currently all backups older than 24h will be removed by the cronjob.
-- If the Zlib library is present the backups get compressed by gzip.
+- If the Zlib library is present the backups get compressed with gzip.
 
 ## Limitations
 
