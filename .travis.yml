@@ -41,7 +41,8 @@ install:
   - cd owncloud
   - ./occ maintenance:install --database-name oc_autotest --database-user oc_autotest --database-pass --admin-user admin --admin-pass admin --database $DB
   - ./occ app:enable ownbackup
-
+  # update composer
+  - composer self-update
 before_script:
   - cd apps/ownbackup
   - composer require codeclimate/php-test-reporter --dev
@@ -49,7 +50,7 @@ before_script:
 script:
   - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
   - phpunit -c phpunit.integration.xml
-  - cat build/logs/clover.xml
+  # report to Code Climate
   - CODECLIMATE_REPO_TOKEN=7ae7d983b3e92dd6da9faf33169bbef4a4c3b726a40480640899c70fdc4c79be ./vendor/bin/test-reporter
 
 addons:
