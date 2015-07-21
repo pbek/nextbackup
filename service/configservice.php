@@ -11,7 +11,6 @@
 namespace OCA\OwnBackup\Service;
 
 use Exception;
-use \OCP\BackgroundJob;
 use \OCP\IConfig;
 
 class ConfigService {

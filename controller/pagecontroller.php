@@ -12,7 +12,6 @@
 namespace OCA\OwnBackup\Controller;
 
 use OCA\OwnBackup\Service\BackupService;
-use OCP\IConfig;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;

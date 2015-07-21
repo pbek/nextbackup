@@ -472,8 +472,6 @@ class BackupService {
             }
         }
 
-        // TODO: implement other cases
-
         // keep at least one backup per day for one week
 
         // keep at least one backup per week for one month
