@@ -62,9 +62,9 @@ class BackupIntegrationTest extends TestCase {
         // check if there is a table "oc_jobs";
         $this->assertTrue( in_array( self::TEST_TABLE, $tableList ) );
 
-        // "test" fetchFormattedBackupTimestampHash
+        // test fetchFormattedBackupTimestampHash
         $tableList = $this->backupService->fetchFormattedBackupTimestampHash();
-        $this->assertTrue( is_array( $tableList ) && ( count( $tableList ) == 0 ) );
+        $this->assertTrue( is_array( $tableList ) && ( count( $tableList ) == 1 ) );
     }
 
     /**
