@@ -1,7 +1,7 @@
 # OwnBackup Change Log
 
 ## v0.2.2.1
-- fixed a problem with the distribution
+- fixed a problem with the build
 
 ## v0.2.2
 - now showing a special page for non-admin users
