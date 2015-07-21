@@ -46,7 +46,7 @@ before_script:
   - cd apps/ownbackup
 
 script:
-  - phpunit -c phpunit.xml
+  - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
   - phpunit -c phpunit.integration.xml
 
 addons:
