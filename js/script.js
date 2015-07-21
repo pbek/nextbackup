@@ -30,7 +30,7 @@
 							// hide message
 							$('#backup-message').hide();
 
-							OCdialogs.alert( t('ownbackup_backup', 'A new backup has been created.'), t('ownbackup_backup', 'New backup') );
+							OCdialogs.alert( response.message, t('ownbackup_backup', 'New backup') );
 						});
 					}
 				}

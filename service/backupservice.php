@@ -394,15 +394,34 @@ class BackupService {
             return;
         }
 
-        $this->db->beginTransaction();
-
-        foreach ( $tables as $table )
+        try
         {
-            // restore a table
-            $this->doRestoreTable( $timestamp, $table );
+            // enabled maintenance mode
+            $this->configService->setSystemValue('maintenance', true);
+
+            $this->db->beginTransaction();
+
+            foreach ( $tables as $table )
+            {
+                // restore a table
+                $this->doRestoreTable( $timestamp, $table );
+            }
+
+            $this->db->commit();
+        }
+        catch( \Exception $e )
+        {
+            // do a rollback
+            $this->db->rollBack();
+
+            // disable maintenance mode
+            $this->configService->setSystemValue('maintenance', false);
+
+            throw $e;
         }
 
-        $this->db->commit();
+        // disable maintenance mode
+        $this->configService->setSystemValue('maintenance', false);
     }
 
     /**

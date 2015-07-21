@@ -22,13 +22,11 @@ class PageController extends Controller {
 
 	private $userId;
 	private $backupService;
-	private $config;
 
-	public function __construct($AppName, IRequest $request, BackupService $backupService, $UserId, IConfig $config){
+	public function __construct($AppName, IRequest $request, BackupService $backupService, $UserId){
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
 		$this->backupService = $backupService;
-		$this->config = $config;
 	}
 
 	/**
@@ -60,21 +58,15 @@ class PageController extends Controller {
 		{
 			try
 			{
-				// enabled maintenance mode
-				$this->config->setSystemValue('maintenance', true);
-
 				// restore tables
 				$this->backupService->doRestoreTables( $timestamp, $tables );
+
+				$message = count( $tables ) . " table(s) have been restored.";
 			}
 			catch( \Exception $e )
 			{
-				$this->config->setSystemValue('maintenance', false);
-				throw $e;
+				$message = "Table(s) could not be restored: " . $e->getMessage();
 			}
-
-			$this->config->setSystemValue('maintenance', false);
-
-			$message = count( $tables ) . " table(s) have been restored.";
 		}
 		else
 		{
@@ -94,7 +86,15 @@ class PageController extends Controller {
 	{
 		$timestamp = (int) $timestamp;
 
-		$tableList = $this->backupService->fetchTablesFromBackupTimestamp( $timestamp );
+		try
+		{
+			$tableList = $this->backupService->fetchTablesFromBackupTimestamp( $timestamp );
+		}
+		catch( \Exception $e )
+		{
+			$tableList = [];
+		}
+
 		return new DataResponse(['tables' => $tableList]);
 	}
 
@@ -105,10 +105,22 @@ class PageController extends Controller {
 	 */
 	public function doCreateBackup()
 	{
-		// create a new backup
-		$this->backupService->createDBBackup();
+		$message = "A new backup has been created.";
+
+		try
+		{
+			// create a new backup
+			$this->backupService->createDBBackup();
+		}
+		catch( \Exception $e )
+		{
+			$message = "Could not create backup: " . $e->getMessage();
+		}
 
 		// return all backup timestamps as formatted hash
-		return new DataResponse(['timestamps' => $this->backupService->fetchFormattedBackupTimestampHash()]);
+		return new DataResponse([
+			'message' => $message,
+			'timestamps' => $this->backupService->fetchFormattedBackupTimestampHash()
+		]);
 	}
 }

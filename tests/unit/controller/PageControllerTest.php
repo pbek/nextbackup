@@ -24,14 +24,13 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$request = $this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock();
 		$backupService = $this->getMockBuilder('OCA\OwnBackup\Service\BackupService')->disableOriginalConstructor()->getMock();
-		$config = $this->getMockBuilder('OCP\IConfig')->disableOriginalConstructor()->getMock();
 
 		// generate a random user name
 		$userId = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(20,
 			ISecureRandom::CHAR_LOWER. ISecureRandom::CHAR_UPPER.
 			ISecureRandom::CHAR_DIGITS);
 
-		$this->controller = new PageController(	'ownbackup', $request, $backupService, $userId, $config );
+		$this->controller = new PageController(	'ownbackup', $request, $backupService, $userId );
 	}
 
 	public function testIndex() {
@@ -64,7 +63,7 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
 	public function testDoCreateBackup() {
 		$result = $this->controller->doCreateBackup();
 
-		$this->assertEquals(['timestamps' => NULL], $result->getData());
+		$this->assertEquals(['timestamps' => NULL, 'message' => 'A new backup has been created.'], $result->getData());
 		$this->assertTrue($result instanceof DataResponse);
 	}
 }

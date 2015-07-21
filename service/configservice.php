@@ -97,4 +97,14 @@ class ConfigService {
     public function getSystemValue( $key, $default = '' ) {
         return $this->owncloudConfig->getSystemValue( $key, $default );
     }
+
+    /**
+     * Sets a new system wide value
+     *
+     * @param string $key the key of the value, under which will be saved
+     * @param mixed $value the value that should be stored
+     */
+    public function setSystemValue($key, $value) {
+        return $this->owncloudConfig->setSystemValue( $key, $value );
+    }
 }
