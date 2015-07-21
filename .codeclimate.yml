@@ -3,9 +3,3 @@ languages:
   JavaScript: true
   PHP: true
   Python: false
-
-engines:
-  eslint:
-    enabled: true
-  csslint:
-    enabled: true
