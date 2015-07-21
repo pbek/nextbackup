@@ -48,6 +48,7 @@ before_script:
 script:
   - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
   - phpunit -c phpunit.integration.xml
+  - cat build/logs/clover.xml
 
 addons:
     postgresql: "9.3"
