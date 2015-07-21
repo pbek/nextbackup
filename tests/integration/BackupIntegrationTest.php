@@ -46,8 +46,6 @@ class BackupIntegrationTest extends TestCase {
 
     /**
      * Checks if a backup can be created
-     *
-     * @throws Exception
      */
     public function testBackup() {
         $timestamp = time();
@@ -64,6 +62,9 @@ class BackupIntegrationTest extends TestCase {
         // check if there is a table "oc_jobs";
         $this->assertTrue( in_array( self::TEST_TABLE, $tableList ) );
 
+        // "test" fetchFormattedBackupTimestampHash
+        $tableList = $this->backupService->fetchFormattedBackupTimestampHash();
+        $this->assertTrue( is_array( $tableList ) && ( count( $tableList ) == 0 ) );
     }
 
     /**
@@ -90,6 +91,24 @@ class BackupIntegrationTest extends TestCase {
         // check if table is present again
         $tableExists = $this->db->tableExists( self::TEST_TABLE_NO_PREFIX );
         $this->assertTrue( $tableExists );
+
+        // test if 0 timestamp is handled
+        $result = $this->backupService->doRestoreTables( 0, $tableList );
+        $this->assertFalse( $result );
+
+        // test if 0 timestamp is handled
+        $result = $this->backupService->doRestoreTable( 0, self::TEST_TABLE );
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * Checks if an invalid backup can be restored
+     *
+     * @expectedException Exception
+     */
+    public function testInvalidRestore() {
+        $tableList = [self::TEST_TABLE];
+        $this->backupService->doRestoreTables( 1, $tableList );
     }
 
     /**
@@ -98,8 +117,6 @@ class BackupIntegrationTest extends TestCase {
      * @depends testBackup
      */
     public function testRemove() {
-
-//        $this->backupService->removeBackup( $timestamp );
 
         $timestamp = $this->backupService->fetchLastBackupTimestamp();
         $this->assertTrue( is_int( $timestamp ), "no backup was found" );
@@ -112,5 +129,18 @@ class BackupIntegrationTest extends TestCase {
             $newTimestamp = $this->backupService->fetchLastBackupTimestamp();
             $this->assertNotEquals( $newTimestamp, $timestamp, "backup was still found" );
         }
+
+        // test if 0 timestamp is handled
+        $result = $this->backupService->removeBackup( 0 );
+        $this->assertFalse( $result );
+    }
+
+    /**
+     * Tests expiring of backups
+     */
+    public function testExpire() {
+
+        $timestampList = $this->backupService->expireOldBackups();
+        $this->assertTrue( is_array( $timestampList ) );
     }
 }

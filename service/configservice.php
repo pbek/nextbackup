@@ -33,14 +33,6 @@ class ConfigService {
     }
 
     /**
-     *
-     * @return string
-     */
-    public function getLogfileName() {
-        return $this->getDataDir() . '/backup.log';
-    }
-
-    /**
      * @return string
      * @throws Exception
      */
@@ -57,25 +49,6 @@ class ConfigService {
         }
 
         return $backupDir;
-    }
-
-    /**
-     *
-     * @param string $key
-     * @param string[optional] $default
-     * @return string
-     */
-    public function getAppValue($key, $default = null) {
-        return $this->owncloudConfig->getAppValue($this->appName, $key, $default);
-    }
-
-    /**
-     *
-     * @param string $key
-     * @param string $value
-     */
-    public function setAppValue($key, $value) {
-        $this->owncloudConfig->setAppValue($this->appName, $key, $value);
     }
 
     /**

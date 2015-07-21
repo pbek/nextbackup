@@ -9,7 +9,7 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-use OCP\AppFramework\App;
+use OCA\OwnBackup\AppInfo\Application;
 use Test\TestCase;
 
 
@@ -24,7 +24,7 @@ class AppTest extends TestCase {
 
     public function setUp() {
         parent::setUp();
-        $app = new App('ownbackup');
+        $app = new Application();
         $this->container = $app->getContainer();
     }
 

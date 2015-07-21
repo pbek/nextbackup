@@ -253,6 +253,7 @@ class BackupService {
      *
      * @param int $timestamp
      * @param string $table
+     * @return bool
      * @throws Exception
      */
     public function doRestoreTable( $timestamp, $table )
@@ -261,7 +262,7 @@ class BackupService {
 
         if ( $timestamp == 0 )
         {
-            return;
+            return false;
         }
 
         // get the table structure file name
@@ -321,6 +322,8 @@ class BackupService {
         $this->db->commit();
 
         $this->logger->log( 10, $this->getCallerName() . " restored table '$table' from backup $timestamp" );
+
+        return true;
     }
 
     /**
@@ -383,6 +386,7 @@ class BackupService {
      *
      * @param int $timestamp
      * @param array $tables
+     * @return bool
      * @throws Exception
      */
     public function doRestoreTables( $timestamp, array $tables )
@@ -391,7 +395,7 @@ class BackupService {
 
         if ( $timestamp == 0 )
         {
-            return;
+            return false;
         }
 
         try
@@ -422,6 +426,8 @@ class BackupService {
 
         // disable maintenance mode
         $this->configService->setSystemValue('maintenance', false);
+
+        return true;
     }
 
     /**
@@ -453,7 +459,7 @@ class BackupService {
     /**
      * Expires all old backups
      *
-     * @return array
+     * @return array timestamp list of removed backups
      */
     public function expireOldBackups()
     {
