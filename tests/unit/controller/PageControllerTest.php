@@ -49,6 +49,9 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(['message' => '1 table(s) have been restored.'], $result->getData());
 		$this->assertTrue($result instanceof DataResponse);
+
+		$result = $this->controller->doRestoreTables( $timestamp, array() );
+		$this->assertEquals(['message' => 'No table have been restored.'], $result->getData());
 	}
 
 	public function testDoFetchTables() {

@@ -65,6 +65,14 @@ class BackupIntegrationTest extends TestCase {
         // test fetchFormattedBackupTimestampHash
         $tableList = $this->backupService->fetchFormattedBackupTimestampHash();
         $this->assertTrue( is_array( $tableList ) && ( count( $tableList ) == 1 ) );
+
+        // check 0 timestamp
+        $tableList = $this->backupService->fetchTablesFromBackupTimestamp( 0 );
+        $this->assertFalse( $tableList );
+
+        // check if we need a new backup now
+        $result = $this->backupService->needNewBackup();
+        $this->assertFalse( $result );
     }
 
     /**
