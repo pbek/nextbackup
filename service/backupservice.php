@@ -124,7 +124,7 @@ class BackupService {
                 // get name of table directory
                 $tableDir = "$backupDir/$tableName";
 
-                // create table directory if it not exists
+                // create table directory if it does not exist
                 if ( !file_exists( $tableDir ) )
                 {
                     if ( !mkdir( $tableDir ) )
