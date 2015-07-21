@@ -48,8 +48,7 @@ before_script:
   - composer require codeclimate/php-test-reporter --dev
 
 script:
-  - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
-  - phpunit -c phpunit.integration.xml
+  - phpunit -c phpunit.coverage.xml --coverage-clover build/logs/clover.xml
 
 after_script:
   # report to Code Climate via curl
