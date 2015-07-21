@@ -11,7 +11,13 @@ style('ownbackup', ['style', 'chosen.min']);
 
 	<div id="app-content">
 		<div id="app-content-wrapper">
-			<?php print_unescaped($this->inc('part.content')); ?>
+			<?php if ($_["isAdminUser"]): ?>
+				<?php print_unescaped($this->inc('part.content')); ?>
+			<?php else: ?>
+				<div class="section">
+					You have to be admin to use <strong>OwnBackup</strong>!
+				</div>
+			<?php endif ?>
 		</div>
 	</div>
 </div>

@@ -11,6 +11,7 @@
 
 namespace OCA\OwnBackup\Controller;
 
+use OCP\Security\ISecureRandom;
 use PHPUnit_Framework_TestCase;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -19,21 +20,25 @@ use OCP\AppFramework\Http\TemplateResponse;
 class PageControllerTest extends PHPUnit_Framework_TestCase {
 
 	private $controller;
-	private $userId = 'john';
 
 	public function setUp() {
 		$request = $this->getMockBuilder('OCP\IRequest')->getMock();
 		$backupService = $this->getMockBuilder('OCA\OwnBackup\Service\BackupService')->getMock();
 
+		// generate a random user name
+		$userId = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(20,
+			ISecureRandom::CHAR_LOWER. ISecureRandom::CHAR_UPPER.
+			ISecureRandom::CHAR_DIGITS);
+
 		$this->controller = new PageController(
-			'ownbackup', $request, $backupService, $this->userId
+			'ownbackup', $request, $backupService, $userId
 		);
 	}
 
 	public function testIndex() {
 		$result = $this->controller->index();
 
-		$this->assertEquals(['backupDateHash' => NULL], $result->getParams());
+		$this->assertEquals(['backupDateHash' => NULL, 'isAdminUser' => false], $result->getParams());
 		$this->assertEquals('main', $result->getTemplateName());
 		$this->assertTrue($result instanceof TemplateResponse);
 	}

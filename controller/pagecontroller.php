@@ -29,11 +29,13 @@ class PageController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	public function index() {
 		$params = [
-			'backupDateHash' => $this->backupService->fetchFormattedBackupTimestampHash()
+			'backupDateHash' => $this->backupService->fetchFormattedBackupTimestampHash(),
+			'isAdminUser' => \OC_User::isAdminUser( $this->userId )
 		];
 
 		return new TemplateResponse('ownbackup', 'main', $params);  // templates/main.php

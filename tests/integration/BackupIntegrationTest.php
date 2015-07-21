@@ -62,7 +62,7 @@ class BackupIntegrationTest extends TestCase {
         $this->assertGreaterThan( 0, count( $tableList ) );
 
         // check if there is a table "oc_jobs";
-        $this->assertEquals( true, in_array( self::TEST_TABLE, $tableList ) );
+        $this->assertTrue( in_array( self::TEST_TABLE, $tableList ) );
 
     }
 
@@ -80,7 +80,7 @@ class BackupIntegrationTest extends TestCase {
 
         // check if table is gone
         $tableExists = $this->db->tableExists( self::TEST_TABLE_NO_PREFIX );
-        $this->assertEquals( false, $tableExists );
+        $this->assertFalse( $tableExists );
 
         // restore table
         $timestamp = $timestampList[0];
@@ -89,20 +89,28 @@ class BackupIntegrationTest extends TestCase {
 
         // check if table is present again
         $tableExists = $this->db->tableExists( self::TEST_TABLE_NO_PREFIX );
-        $this->assertEquals( true, $tableExists );
+        $this->assertTrue( $tableExists );
     }
 
     /**
-     * Checks if a table exists
+     * Checks if a backup can be removed
      *
-     * @param $table
-     * @return bool
+     * @depends testBackup
      */
-    private function checkIfTableExists( $table )
-    {
-        $sql = "SHOW TABLES LIKE '$table'";
-        $query = $this->db->prepareQuery($sql);
-        $result = $query->execute();
-        return $result->fetchOne() == $table;
+    public function testRemove() {
+
+//        $this->backupService->removeBackup( $timestamp );
+
+        $timestamp = $this->backupService->fetchLastBackupTimestamp();
+        $this->assertTrue( is_int( $timestamp ), "no backup was found" );
+
+        $result = $this->backupService->removeBackup( $timestamp );
+        $this->assertTrue( $result, "backup could not be removed" );
+
+        if ( $result )
+        {
+            $newTimestamp = $this->backupService->fetchLastBackupTimestamp();
+            $this->assertNotEquals( $newTimestamp, $timestamp, "backup was still found" );
+        }
     }
 }
