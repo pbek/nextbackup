@@ -48,13 +48,13 @@ class BackupService {
     /**
      * Returns the complete serialized dump of a table without field names
      *
-     * @param $table
+     * @param string $table
      * @return array
      */
     public function getTableSerializedDataDump( $table )
     {
-        $sql = "SELECT * FROM $table";
-        $query = $this->db->prepareQuery($sql);
+        $sql = "SELECT * FROM `$table`";
+        $query = $this->db->prepareQuery( $sql );
         $result = $query->execute();
 
         return serialize( array_map( function( $array ) {
@@ -212,11 +212,18 @@ class BackupService {
      * Fetches all table names of the backup with a certain timestamp
      *
      * @param int $timestamp
-     * @return array
+     * @return array|false
      * @throws Exception
      */
     public function fetchTablesFromBackupTimestamp( $timestamp )
     {
+        $timestamp = (int) $timestamp;
+
+        if ( $timestamp == 0 )
+        {
+            return false;
+        }
+
         $backupDir = $this->configService->getBackupBaseDirectory() . "/$timestamp";
         $tableList = [];
 
@@ -250,6 +257,13 @@ class BackupService {
      */
     public function doRestoreTable( $timestamp, $table )
     {
+        $timestamp = (int) $timestamp;
+
+        if ( $timestamp == 0 )
+        {
+            return;
+        }
+
         // get the table structure file name
         $structureFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table/structure.xml";
 
@@ -371,8 +385,15 @@ class BackupService {
      * @param array $tables
      * @throws Exception
      */
-    public function doRestoreTables( $timestamp, $tables )
+    public function doRestoreTables( $timestamp, array $tables )
     {
+        $timestamp = (int) $timestamp;
+
+        if ( $timestamp == 0 )
+        {
+            return;
+        }
+
         $this->db->beginTransaction();
 
         foreach ( $tables as $table )
@@ -461,12 +482,19 @@ class BackupService {
     /**
      * Removes a backup
      *
-     * @param $timestamp
+     * @param int $timestamp
      * @return bool
      * @throws Exception
      */
     public function removeBackup( $timestamp )
     {
+        $timestamp = (int) $timestamp;
+
+        if ( $timestamp == 0 )
+        {
+            return false;
+        }
+
         $backupDir = $this->configService->getBackupBaseDirectory() . "/$timestamp";
         $success = false;
 

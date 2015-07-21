@@ -22,17 +22,16 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
 	private $controller;
 
 	public function setUp() {
-		$request = $this->getMockBuilder('OCP\IRequest')->getMock();
-		$backupService = $this->getMockBuilder('OCA\OwnBackup\Service\BackupService')->getMock();
+		$request = $this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock();
+		$backupService = $this->getMockBuilder('OCA\OwnBackup\Service\BackupService')->disableOriginalConstructor()->getMock();
+		$config = $this->getMockBuilder('OCP\IConfig')->disableOriginalConstructor()->getMock();
 
 		// generate a random user name
 		$userId = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(20,
 			ISecureRandom::CHAR_LOWER. ISecureRandom::CHAR_UPPER.
 			ISecureRandom::CHAR_DIGITS);
 
-		$this->controller = new PageController(
-			'ownbackup', $request, $backupService, $userId
-		);
+		$this->controller = new PageController(	'ownbackup', $request, $backupService, $userId, $config );
 	}
 
 	public function testIndex() {

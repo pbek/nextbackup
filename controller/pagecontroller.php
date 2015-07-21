@@ -12,6 +12,7 @@
 namespace OCA\OwnBackup\Controller;
 
 use OCA\OwnBackup\Service\BackupService;
+use OCP\IConfig;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;
@@ -21,11 +22,13 @@ class PageController extends Controller {
 
 	private $userId;
 	private $backupService;
+	private $config;
 
-	public function __construct($AppName, IRequest $request, BackupService $backupService, $UserId){
+	public function __construct($AppName, IRequest $request, BackupService $backupService, $UserId, IConfig $config){
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
 		$this->backupService = $backupService;
+		$this->config = $config;
 	}
 
 	/**
@@ -47,13 +50,30 @@ class PageController extends Controller {
 	 * @param int $timestamp
 	 * @param array $tables
 	 * @return DataResponse
+	 * @throws \Exception
 	 */
 	public function doRestoreTables( $timestamp, array $tables )
 	{
+		$timestamp = (int) $timestamp;
+
 		if ( is_array( $tables ) && ( count( $tables ) > 0 ) )
 		{
-			// restore tables
-			$this->backupService->doRestoreTables( $timestamp, $tables );
+			try
+			{
+				// enabled maintenance mode
+				$this->config->setSystemValue('maintenance', true);
+
+				// restore tables
+				$this->backupService->doRestoreTables( $timestamp, $tables );
+			}
+			catch( \Exception $e )
+			{
+				$this->config->setSystemValue('maintenance', false);
+				throw $e;
+			}
+
+			$this->config->setSystemValue('maintenance', false);
+
 			$message = count( $tables ) . " table(s) have been restored.";
 		}
 		else
@@ -72,6 +92,8 @@ class PageController extends Controller {
 	 */
 	public function doFetchTables( $timestamp )
 	{
+		$timestamp = (int) $timestamp;
+
 		$tableList = $this->backupService->fetchTablesFromBackupTimestamp( $timestamp );
 		return new DataResponse(['tables' => $tableList]);
 	}
