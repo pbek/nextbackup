@@ -40,7 +40,7 @@ class BackupService {
      *
      * @return string
      */
-    public function getCallerName()
+    private function getCallerName()
     {
         return is_null( $this->userId ) ? $this->appName : "user " . $this->userId;
     }
@@ -51,7 +51,7 @@ class BackupService {
      * @param string $table
      * @return array
      */
-    public function getTableSerializedDataDump( $table )
+    private function getTableSerializedDataDump( $table )
     {
         $sql = "SELECT * FROM `$table`";
         $query = $this->db->prepareQuery( $sql );
@@ -329,7 +329,7 @@ class BackupService {
      * @param string $tableStructureFile
      * @return array
      */
-    public function getFieldListFromTableStructureFile( $tableStructureFile )
+    private function getFieldListFromTableStructureFile( $tableStructureFile )
     {
         // create a xml object from table structure
         $loadEntities = libxml_disable_entity_loader(false);
@@ -364,7 +364,7 @@ class BackupService {
      * @return mixed
      * @throws Exception
      */
-    public function dropTable( $table )
+    private function dropTable( $table )
     {
         // remove the prefix from the table name
         $filterExpression = '/^' . preg_quote( $this->configService->getSystemValue( 'dbtableprefix', 'oc_' ) ) . '/';
@@ -460,7 +460,7 @@ class BackupService {
         // fetch all backup timestamps
         $backupTimestamps = $this->fetchBackupTimestamps();
 
-        $keepBackupTimestamps = [];
+        $keepTimestampList = [];
         $time = time();
 
         // keep all backups of the last 24h
@@ -468,7 +468,7 @@ class BackupService {
         {
             if ( $timestamp > ( $time - 86400 )  )
             {
-                $keepBackupTimestamps[] = $timestamp;
+                $keepTimestampList[] = $timestamp;
             }
         }
 
@@ -480,20 +480,20 @@ class BackupService {
 
         // keep one backup per year for 10 years
 
-        $removeBackupTimestamps = array_diff( $backupTimestamps, $keepBackupTimestamps );
-        $removedBackups = [];
+        $removeTimestampList = array_diff( $backupTimestamps, $keepTimestampList );
+        $removedTimestampList = [];
 
         // expire old backups
-        foreach ( $removeBackupTimestamps as $timestamp )
+        foreach ( $removeTimestampList as $timestamp )
         {
             // remove backup
             if ( $this->removeBackup( $timestamp ) )
             {
-                $removedBackups[] = $timestamp;
+                $removedTimestampList[] = $timestamp;
             }
         }
 
-        return $removedBackups;
+        return $removedTimestampList;
     }
 
     /**
@@ -578,7 +578,7 @@ class BackupService {
      * @param string $dir
      * @return bool
      */
-    public function recursivelyRemoveDir( $dir )
+    private function recursivelyRemoveDir( $dir )
     {
         $success = false;
         if (is_dir($dir)) {
