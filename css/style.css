@@ -32,10 +32,11 @@ button.icon-button span {
 	padding: 20px;
 	top: 40%;
 	left: 40%;
-	position: absolute;
+	position: fixed;
 	background-color: #F5F5F5;
 	display: none;
 	border: 2px dashed #333;
+	z-index:6;
 }
 
 .message-box h3 {
@@ -47,3 +48,15 @@ button.icon-button span {
 	height: 32px;
 	margin-top: 10px;
 }
+
+#cover {
+	position:fixed;
+	top:0;
+	left:0;
+	background:rgba(0,0,0,0.2);
+	z-index:5;
+	width:100%;
+	height:100%;
+	display:none;
+}
+

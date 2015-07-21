@@ -20,8 +20,10 @@
 					if ( confirmed )
 					{
 						var url = OC.generateUrl('/apps/ownbackup/create-backup');
+
 						// show a message
 						$('#backup-message').show();
+						$('#cover').show();
 
 						$.post(url).success(function (response) {
 							// update the backup date selector
@@ -29,11 +31,13 @@
 
 							// hide message
 							$('#backup-message').hide();
+							$('#cover').hide();
 
-							OCdialogs.alert( response.message, t('ownbackup_backup', 'New backup') );
+							OCdialogs.info( response.message, t('ownbackup_backup', 'New backup'), null, true );
 						});
 					}
-				}
+				},
+				true
 			);
 		});
 
@@ -60,6 +64,7 @@
 					{
 						// show a message
 						$('#restore-message').show();
+						$('#cover').show();
 
 						var url = OC.generateUrl('/apps/ownbackup/restore-tables');
 						var data = {
@@ -70,11 +75,13 @@
 						$.post(url, data).success(function (response) {
 							// hide message
 							$('#restore-message').hide();
+							$('#cover').hide();
 
-							OCdialogs.alert( response.message, t('ownbackup_restore', 'Tables restored') );
+							OCdialogs.info( response.message, t('ownbackup_restore', 'Tables restored'), null, true );
 						});
 					}
-				}
+				},
+				true
 			);
 		});
 

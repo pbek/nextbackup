@@ -45,3 +45,4 @@
     </h3>
     <div class="icon-loading wait-spinner">&nbsp;</div>
 </div>
+<div id="cover"></div>
