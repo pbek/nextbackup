@@ -52,7 +52,8 @@ script:
 
 after_script:
   # report to Code Climate via curl
-  - CODECLIMATE_REPO_TOKEN="7ae7d983b3e92dd6da9faf33169bbef4a4c3b726a40480640899c70fdc4c79be" ./vendor/bin/test-reporter --stdout > codeclimate.json
+  # $CODECLIMATE_REPO_TOKEN has to be set as environment variable ob travis
+  - ./vendor/bin/test-reporter --stdout > codeclimate.json
   - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"
 
 addons:
