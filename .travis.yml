@@ -7,7 +7,7 @@ php:
 
 env:
   global:
-    - BRANCH=develop
+    - BRANCH=master
   matrix:
     - DB=mysql
 

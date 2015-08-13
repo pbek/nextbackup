@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## v0.3
+- re-implemented the backup and restore page in the admin section
+
 ## v0.2.2.1
 - fixed a problem with the build
 
