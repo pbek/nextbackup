@@ -25,12 +25,7 @@ class AdminControllerTest extends PHPUnit_Framework_TestCase {
 		$request = $this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock();
 		$backupService = $this->getMockBuilder('OCA\OwnBackup\Service\BackupService')->disableOriginalConstructor()->getMock();
 
-		// generate a random user name
-		$userId = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(20,
-			ISecureRandom::CHAR_LOWER. ISecureRandom::CHAR_UPPER.
-			ISecureRandom::CHAR_DIGITS);
-
-		$this->controller = new AdminController( 'ownbackup', $request, $backupService, $userId );
+		$this->controller = new AdminController( 'ownbackup', $request, $backupService );
 	}
 
 	public function testIndex() {

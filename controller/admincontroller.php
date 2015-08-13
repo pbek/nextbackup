@@ -19,25 +19,22 @@ use OCP\AppFramework\Controller;
 
 class AdminController extends Controller {
 
-	private $userId;
 	private $backupService;
 
-	public function __construct($AppName, IRequest $request, BackupService $backupService, $UserId){
+	public function __construct($AppName, IRequest $request, BackupService $backupService){
 		parent::__construct($AppName, $request);
-		$this->userId = $UserId;
 		$this->backupService = $backupService;
 	}
 
 	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
+	 * Admin page
 	 */
 	public function index() {
 		$params = [
 			'backupDateHash' => $this->backupService->fetchFormattedBackupTimestampHash(),
 		];
 
-		return new TemplateResponse('ownbackup', 'admin', $params, "blank");  // templates/main.php
+		return new TemplateResponse($this->appName, 'admin', $params, "blank");  // templates/admin.php
 	}
 
 	/**

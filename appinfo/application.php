@@ -30,8 +30,7 @@ class Application extends App
             return new AdminController(
                 $c->query('AppName'),
                 $c->query('Request'),
-                $c->query('BackupService'),
-                $c->query('UserId')
+                $c->query('BackupService')
             );
         });
     }

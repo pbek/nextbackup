@@ -33,9 +33,6 @@
         <database>mysql</database>
     </dependencies>
 
-    <!-- admin -->
-    <admin>admin/admin</admin>
-
     <!-- cron jobs -->
     <cron>
         <job>OCA\OwnBackup\Jobs\BackupJob</job>

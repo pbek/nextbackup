@@ -204,7 +204,6 @@ class BackupService {
             $dateHash[$timestamp] = $dateTimeFormatter->formatDateTime( $timestamp );
         }
 
-
         return $dateHash;
     }
 
