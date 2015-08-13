@@ -12,6 +12,9 @@ It's main purpose is to provide an easy solution to restore the tables of an app
 
 Place this app in your `owncloud/apps/` directory.
 
+## Screenshot
+![Screenhot](screenshot.png)
+
 ## Disclaimer
 
 - Use this app at your own risk! Data loss may occur!
