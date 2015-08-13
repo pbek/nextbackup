@@ -37,7 +37,7 @@ class AdminControllerTest extends PHPUnit_Framework_TestCase {
 		$result = $this->controller->index();
 
 		$this->assertEquals(['backupDateHash' => NULL], $result->getParams());
-		$this->assertEquals('main', $result->getTemplateName());
+		$this->assertEquals('admin', $result->getTemplateName());
 		$this->assertTrue($result instanceof TemplateResponse);
 	}
 
