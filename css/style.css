@@ -1,34 +1,34 @@
-#backup-tables-block {
+#ownbackup-backup-tables-block {
 	display: none;
 	margin-top: 10px;
 }
 
-#backup-date-select {
-	width: 200px;
+#ownbackup-backup-date-select {
+	width: 250px;
 }
 
-#backup-tables-select {
+#ownbackup-backup-tables-select {
 	width: 300px;
 	height: auto;
 }
 
-.box {
+#ownbackup .box {
 	margin: 10px 0;
 }
 
-button.icon-button {
+#ownbackup button.icon-button {
 	padding: 4px;
 	position: relative;
 	top: 1px;
 }
 
-button.icon-button span {
+#ownbackup button.icon-button span {
 	display: inline-block;
 	position: relative;
 	top: 2px;
 }
 
-.message-box {
+#ownbackup .message-box {
 	padding: 20px;
 	top: 40%;
 	left: 40%;
@@ -39,17 +39,17 @@ button.icon-button span {
 	z-index:6;
 }
 
-.message-box h3 {
+#ownbackup .message-box h3 {
 	font-size: 1.6em;
 	margin-bottom: 30px;
 }
 
-.wait-spinner {
+#ownbackup .wait-spinner {
 	height: 32px;
 	margin-top: 10px;
 }
 
-#cover {
+#ownbackup-cover {
 	position:fixed;
 	top:0;
 	left:0;
@@ -59,4 +59,3 @@ button.icon-button span {
 	height:100%;
 	display:none;
 }
-

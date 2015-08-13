@@ -17,7 +17,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-class PageController extends Controller {
+class AdminController extends Controller {
 
 	private $userId;
 	private $backupService;
@@ -35,10 +35,9 @@ class PageController extends Controller {
 	public function index() {
 		$params = [
 			'backupDateHash' => $this->backupService->fetchFormattedBackupTimestampHash(),
-			'isAdminUser' => \OC_User::isAdminUser( $this->userId )
 		];
 
-		return new TemplateResponse('ownbackup', 'main', $params);  // templates/main.php
+		return new TemplateResponse('ownbackup', 'admin', $params, "blank");  // templates/main.php
 	}
 
 	/**

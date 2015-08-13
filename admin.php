@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ownCloud - ownbackup
  *
@@ -9,10 +10,11 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-namespace OCA\OwnBackup\AppInfo;
+namespace OCA\OwnBackup;
 
-use OCA\OwnBackup\Jobs\BackupJob;
+use \OCA\OwnBackup\AppInfo\Application;
 
 $app = new Application();
-
-\OC::$server->getJobList()->add( new BackupJob() );
+$container = $app->getContainer();
+$response = $container->query('\OCA\OwnBackup\Controller\AdminController')->index();
+return $response->render();

@@ -17,7 +17,7 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 
 
-class PageControllerTest extends PHPUnit_Framework_TestCase {
+class AdminControllerTest extends PHPUnit_Framework_TestCase {
 
 	private $controller;
 
@@ -30,7 +30,7 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
 			ISecureRandom::CHAR_LOWER. ISecureRandom::CHAR_UPPER.
 			ISecureRandom::CHAR_DIGITS);
 
-		$this->controller = new PageController(	'ownbackup', $request, $backupService, $userId );
+		$this->controller = new AdminController( 'ownbackup', $request, $backupService, $userId );
 	}
 
 	public function testIndex() {

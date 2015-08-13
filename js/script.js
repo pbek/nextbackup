@@ -11,7 +11,7 @@
 (function ($, OC) {
 
 	$(document).ready(function () {
-		$('#backup-button').click(function () {
+		$('#ownbackup-backup-button').click(function () {
 			OCdialogs.confirm(
 				t('ownbackup_backup', 'Are you sure you want to create a new backup?'),
 				t('ownbackup_backup', 'Create backup?'),
@@ -22,16 +22,16 @@
 						var url = OC.generateUrl('/apps/ownbackup/create-backup');
 
 						// show a message
-						$('#backup-message').show();
-						$('#cover').show();
+						$('#ownbackup-backup-message').show();
+						$('#ownbackup-cover').show();
 
 						$.post(url).success(function (response) {
 							// update the backup date selector
-							updateSelectorHashItems( $('#backup-date-select'), response.timestamps, true );
+							updateSelectorHashItems( $('#ownbackup-backup-date-select'), response.timestamps, true );
 
 							// hide message
-							$('#backup-message').hide();
-							$('#cover').hide();
+							$('#ownbackup-backup-message').hide();
+							$('#ownbackup-cover').hide();
 
 							OCdialogs.info( response.message, t('ownbackup_backup', 'New backup'), null, true );
 						});
@@ -41,19 +41,19 @@
 			);
 		});
 
-		$('#select-all-tables-button').click(function () {
-			var $select = $('#backup-tables-select');
+		$('#ownbackup-select-all-tables-button').click(function () {
+			var $select = $('#ownbackup-backup-tables-select');
 			$select.find('option').attr('selected', 'selected');
 			$select.trigger('chosen:updated');
 		});
 
-		$('#deselect-all-tables-button').click(function () {
-			var $select = $('#backup-tables-select');
+		$('#ownbackup-deselect-all-tables-button').click(function () {
+			var $select = $('#ownbackup-backup-tables-select');
 			$select.find('option:selected').removeAttr('selected');
 			$select.trigger('chosen:updated');
 		});
 
-		$('#restore-button').click(function (){
+		$('#ownbackup-restore-button').click(function (){
 
 			OCdialogs.confirm(
 				t('ownbackup_restore', 'Are you sure you want to restore the selected tables?'),
@@ -64,18 +64,18 @@
 					{
 						// show a message
 						$('#restore-message').show();
-						$('#cover').show();
+						$('#ownbackup-cover').show();
 
 						var url = OC.generateUrl('/apps/ownbackup/restore-tables');
 						var data = {
-							timestamp: $('#backup-date-select').val(),
-							tables: $('#backup-tables-select').val()
+							timestamp: $('#ownbackup-backup-date-select').val(),
+							tables: $('#ownbackup-backup-tables-select').val()
 						};
 
 						$.post(url, data).success(function (response) {
 							// hide message
 							$('#restore-message').hide();
-							$('#cover').hide();
+							$('#ownbackup-cover').hide();
 
 							OCdialogs.info( response.message, t('ownbackup_restore', 'Tables restored'), null, true );
 						});
@@ -85,7 +85,7 @@
 			);
 		});
 
-		$('#backup-date-select').change( function() {
+		$('#ownbackup-backup-date-select').change( function() {
 			var timestamp = parseInt( $(this).val() );
 
 			if ( timestamp == 0 )
@@ -99,8 +99,8 @@
 			};
 
 			$.post(url, data).success(function (response) {
-				$('#backup-tables-block').show();
-				updateSelectorArrayItems( $('#backup-tables-select'), response.tables, false );
+				$('#ownbackup-backup-tables-block').show();
+				updateSelectorArrayItems( $('#ownbackup-backup-tables-select'), response.tables, false );
 			});
 		} );
 
