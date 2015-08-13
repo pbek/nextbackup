@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## v0.3.1
+- tried to fix a problem with the OwnBackup section not showing up on the admin page
+
 ## v0.3
 - re-implemented the backup and restore page in the admin section
 
