@@ -105,7 +105,7 @@ class BackupService {
             foreach ($xml->children() as $child)
             {
                 // skip everything but tables
-                if ( $child->getName() != "table" )
+                if ( $child->getName() !== "table" )
                 {
                     continue;
                 }
@@ -113,7 +113,7 @@ class BackupService {
                 // find the table name
                 $tableName = (string) $child->name;
 
-                if ( $tableName == "" )
+                if ( $tableName === "" )
                 {
                     throw new Exception( "No table name was set!" );
                 }
@@ -171,7 +171,7 @@ class BackupService {
         foreach ( $fileList as $file )
         {
             // skip "." and ".."
-            if ( $file == "." || $file == ".." )
+            if ( $file === "." || $file === ".." )
             {
                 continue;
             }
@@ -218,7 +218,7 @@ class BackupService {
     {
         $timestamp = (int) $timestamp;
 
-        if ( $timestamp == 0 )
+        if ( $timestamp === 0 )
         {
             return false;
         }
@@ -230,7 +230,7 @@ class BackupService {
         foreach ( $fileList as $file )
         {
             // skip "." and ".."
-            if ( $file == "." || $file == ".." )
+            if ( $file === "." || $file === ".." )
             {
                 continue;
             }
@@ -259,7 +259,7 @@ class BackupService {
     {
         $timestamp = (int) $timestamp;
 
-        if ( $timestamp == 0 )
+        if ( $timestamp === 0 )
         {
             return false;
         }
@@ -347,7 +347,7 @@ class BackupService {
         foreach( $tableDeclaration->children() as $child )
         {
             // skip everything but fields
-            if ( $child->getName() != "field" )
+            if ( $child->getName() !== "field" )
             {
                 continue;
             }
@@ -372,7 +372,7 @@ class BackupService {
         $filterExpression = '/^' . preg_quote( $this->configService->getSystemValue( 'dbtableprefix', 'oc_' ) ) . '/';
         $tableNoPrefix = preg_replace( $filterExpression, "", $table );
 
-        if ( $tableNoPrefix == "" )
+        if ( $tableNoPrefix === "" )
         {
             throw new Exception( "Cannot remove prefix from table name: $table" );
         }
@@ -392,7 +392,7 @@ class BackupService {
     {
         $timestamp = (int) $timestamp;
 
-        if ( $timestamp == 0 )
+        if ( $timestamp === 0 )
         {
             return false;
         }
@@ -512,7 +512,7 @@ class BackupService {
     {
         $timestamp = (int) $timestamp;
 
-        if ( $timestamp == 0 )
+        if ( $timestamp === 0 )
         {
             return false;
         }
@@ -589,8 +589,8 @@ class BackupService {
         if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
-                    if (filetype($dir."/".$object) == "dir") $this->recursivelyRemoveDir($dir."/".$object); else unlink($dir."/".$object);
+                if ($object !== "." && $object !== "..") {
+                    if (filetype($dir."/".$object) === "dir") $this->recursivelyRemoveDir($dir."/".$object); else unlink($dir."/".$object);
                 }
             }
             reset($objects);

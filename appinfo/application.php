@@ -13,6 +13,7 @@ namespace OCA\OwnBackup\AppInfo;
 
 use OCP\AppFramework\App;
 use OCA\OwnBackup\Controller\AdminController;
+use OC_Util;
 
 class Application extends App
 {
@@ -20,7 +21,7 @@ class Application extends App
     {
         parent::__construct('ownbackup', $urlParams);
 
-        if (\OC_Util::getEditionString() === ''){
+        if (OC_Util::getEditionString() === ''){
             \OCP\App::registerAdmin('ownbackup', 'admin');
         }
 
