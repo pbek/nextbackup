@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## current
+- fixed some logging issues
+
 ## v0.3.2
 - fixed the problem that OwnBackup might be shown twice in the admin menu
 - fixed all compliance issues

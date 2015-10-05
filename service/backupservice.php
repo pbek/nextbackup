@@ -22,6 +22,7 @@ class BackupService {
     private $odb;
     private $configService;
     private $logger;
+    private $logContext;
     private $userId;
 
     // the minimal interval for backups [s]
@@ -34,6 +35,7 @@ class BackupService {
         $this->odb = $odb;
         $this->configService = $configService;
         $this->logger = $logger;
+        $this->logContext = ['app' => 'ownbackup'];
         $this->userId = $userId;
     }
 
@@ -147,13 +149,13 @@ class BackupService {
                 file_put_contents( $tableDataFile, $this->tryToCompressString( $tableDump ) );
             }
 
-            $this->logger->log( 10, $this->getCallerName() . " created a backup to '$backupDir'" );
+            $this->logger->notice( $this->getCallerName() . " created a backup to '$backupDir'", $this->logContext );
 
             return $timestamp;
         }
         catch ( Exception $e )
         {
-            $this->logger->error( $this->getCallerName() . " thew an exception: " . $e->getMessage() );
+            $this->logger->error( $this->getCallerName() . " thew an exception: " . $e->getMessage(), $this->logContext );
             throw( $e );
         }
     }
@@ -322,7 +324,7 @@ class BackupService {
         }
         $this->db->commit();
 
-        $this->logger->log( 10, $this->getCallerName() . " restored table '$table' from backup $timestamp" );
+        $this->logger->notice( $this->getCallerName() . " restored table '$table' from backup $timestamp", $this->logContext );
 
         return true;
     }
@@ -529,11 +531,11 @@ class BackupService {
 
         if ( $success )
         {
-            $this->logger->log( 10, $this->getCallerName() . " removed backup $timestamp" );
+            $this->logger->notice( $this->getCallerName() . " removed backup $timestamp", $this->logContext );
         }
         else
         {
-            $this->logger->error( $this->getCallerName() . " could not remove backup directory '$backupDir'!" );
+            $this->logger->error( $this->getCallerName() . " could not remove backup directory '$backupDir'!", $this->logContext );
         }
 
         return $success;
