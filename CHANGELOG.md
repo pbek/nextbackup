@@ -1,6 +1,14 @@
 # OwnBackup Change Log
 
-## current
+## v0.3.3
+- fixed sort order of backups in selector on admin page after creating a manual backup
+- new backup expiry scheme 
+    - next 24h, one backup every hour (like in the old behaviour)
+    - next 7d, one backup per day
+    - next 30d, one backup per week
+    - next 1y, one backup per 30d
+    - next 10y, one backup per year
+    - until end of time, one backup per 100y
 - fixed some logging issues
 
 ## v0.3.2

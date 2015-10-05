@@ -7,11 +7,13 @@
  * @author Patrizio Bekerle <patrizio@bekerle.com>
  * @copyright Patrizio Bekerle 2015
  */
+console.log("ownbackup");
 
 (function ($, OC) {
 
 	$(document).ready(function () {
 		$('#ownbackup-backup-button').click(function () {
+			console.log("ownbackup-backup-button");
 			OCdialogs.confirm(
 				t('ownbackup_backup', 'Are you sure you want to create a new backup?'),
 				t('ownbackup_backup', 'Create backup?'),
@@ -26,12 +28,15 @@
 						$('#ownbackup-cover').show();
 
 						$.post(url).success(function (response) {
+							console.log(response);
+
 							// update the backup date selector
-							updateSelectorHashItems( $('#ownbackup-backup-date-select'), response.timestamps, true );
+							updateSelectorHashItems( $('#ownbackup-backup-date-select'), response.timestamps, true, true );
 
 							// hide message
 							$('#ownbackup-backup-message').hide();
 							$('#ownbackup-cover').hide();
+							$('#ownbackup-backup-tables-block').hide();
 
 							OCdialogs.info( response.message, t('ownbackup_backup', 'New backup'), null, true );
 						});
@@ -148,12 +153,18 @@
 	 * @param $selectBox the select box to update
 	 * @param items the items to update it with
 	 * @param addEmptyOption
+	 * @param sort
 	 */
-	function updateSelectorHashItems( $selectBox, items, addEmptyOption )
+	function updateSelectorHashItems( $selectBox, items, addEmptyOption, sort )
 	{
 		if ( addEmptyOption == undefined )
 		{
 			addEmptyOption = false;
+		}
+
+		if ( sort == undefined )
+		{
+			sort = false;
 		}
 
 		$selectBox.empty();
@@ -163,18 +174,24 @@
 			$selectBox.append( $("<option></option>") );
 		}
 
-		// try to add new items
-		for ( var key in items )
-		{
-			// check if key really exists
-			if ( items.hasOwnProperty( key ) )
-			{
-				var item = items[key];
+		var keys = Object.keys( items );
 
-				// add new item
-				$selectBox.append( $("<option></option>")
-					.attr( "value", key ).text( item ) );
-			}
+		if ( sort )
+		{
+			keys.reverse();
+		}
+
+		var len = keys.length;
+
+		// add the new items
+		for ( var i = 0; i < len; i++ )
+		{
+			key = keys[i];
+			var item = items[key];
+
+			// add new item
+			$selectBox.append( $("<option></option>")
+				.attr( "value", key ).text( item ) );
 		}
 
 		// update chosen selector

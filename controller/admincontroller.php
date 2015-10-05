@@ -112,10 +112,13 @@ class AdminController extends Controller {
 			$message = "Could not create backup: " . $e->getMessage();
 		}
 
+		$timestamps = $this->backupService->fetchFormattedBackupTimestampHash();
+
 		// return all backup timestamps as formatted hash
+		// for some reason they are sorted wrongly, so we have to sort them again in javascript
 		return new DataResponse([
 			'message' => $message,
-			'timestamps' => $this->backupService->fetchFormattedBackupTimestampHash()
+			'timestamps' => $timestamps
 		]);
 	}
 }

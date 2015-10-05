@@ -25,6 +25,22 @@ class BackupService {
     private $logContext;
     private $userId;
 
+    private static $maxBackupTimestampsPerInterval = array(
+        // next 24h, one backup every hour
+        array('intervalEndsAfter' => 86400,     'step' => 3600),
+        // next 7d, one backup per day
+        array('intervalEndsAfter' => 604800,    'step' => 86400),
+        // next 30d, one backup per week
+        array('intervalEndsAfter' => 2592000,   'step' => 604800),
+        // next 1y, one backup per 30d
+        array('intervalEndsAfter' => 31536000,  'step' => 2592000),
+        // next 10y, one backup per year
+        array('intervalEndsAfter' => 315360000, 'step' => 31536000),
+        // until end of time, one backup per 100y
+        array('intervalEndsAfter' => -1,        'step' => 3153600000),
+    );
+
+
     // the minimal interval for backups [s]
     const MIN_BACKUP_INTERVAL = 3600;
 
@@ -185,10 +201,11 @@ class BackupService {
             // only add directories to the list
             if ( is_dir( $fullFileName ) && is_readable( $fullFileName ) )
             {
-                $timestampList[] = $file;
+                $timestampList[] = (int) $file;
             }
         }
 
+        rsort( $timestampList, SORT_NUMERIC );
         return $timestampList;
     }
 
@@ -208,6 +225,7 @@ class BackupService {
             $dateHash[$timestamp] = $dateTimeFormatter->formatDateTime( $timestamp );
         }
 
+        krsort( $dateHash, SORT_NUMERIC );
         return $dateHash;
     }
 
@@ -469,27 +487,9 @@ class BackupService {
         // fetch all backup timestamps
         $backupTimestamps = $this->fetchBackupTimestamps();
 
-        $keepTimestampList = [];
         $time = time();
-
-        // keep all backups of the last 24h
-        foreach ( $backupTimestamps as $timestamp )
-        {
-            if ( $timestamp > ( $time - 86400 )  )
-            {
-                $keepTimestampList[] = $timestamp;
-            }
-        }
-
-        // keep at least one backup per day for one week
-
-        // keep at least one backup per week for one month
-
-        // keep at least one backup per month for one year
-
-        // keep one backup per year for 10 years
-
-        $removeTimestampList = array_diff( $backupTimestamps, $keepTimestampList );
+        // get the list of backup timestamps we want to expire
+        $removeTimestampList = self::getAutoExpireList( $time, $backupTimestamps );
         $removedTimestampList = [];
 
         // expire old backups
@@ -504,6 +504,73 @@ class BackupService {
 
         return $removedTimestampList;
     }
+
+    /**
+     * Returns a list of backup timestamps we want to expire
+     * Code was borrowed from Storage::getAutoExpireList() and modified
+     *
+     * @param integer $time
+     * @param integer[] $timestamps list of timestamps
+     * @return integer[] containing the list of to be deleted timestamps
+     */
+    protected static function getAutoExpireList( $time, array $timestamps )
+    {
+        // timestamps we want to delete
+        $toDelete = array();
+
+        $interval = 0;
+        $step = self::$maxBackupTimestampsPerInterval[$interval]['step'];
+        if (self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'] == -1) {
+            $nextInterval = -1;
+        } else {
+            $nextInterval = $time - self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'];
+        }
+
+        $firstTimestamp = reset($timestamps);
+        $firstKey = key($timestamps);
+        $prevTimestamp = $firstTimestamp;
+        $nextTimestamp = $firstTimestamp - $step;
+        unset($timestamps[$firstKey]);
+
+        foreach ($timestamps as $key => $timestamp)
+        {
+            $newInterval = true;
+            while ($newInterval) {
+                if ($nextInterval == -1 || $prevTimestamp > $nextInterval)
+                {
+                    if ($timestamp > $nextTimestamp) {
+                        //distance between two timestamps too small, mark to delete
+                        $toDelete[$key] = $timestamp;
+                        \OCP\Util::writeLog('ownbackup', 'Mark to expire '. $timestamp .' next timestamp should be ' . $nextTimestamp . " or smaller. (prevTimestamp: " . $prevTimestamp . "; step: " . $step, \OCP\Util::DEBUG);
+                    }
+                    else
+                    {
+                        $nextTimestamp = $timestamp - $step;
+                        $prevTimestamp = $timestamp;
+                    }
+                    // timestamp checked so we can move to the next one
+                    $newInterval = false;
+                }
+                // time to move on to the next interval
+                else
+                {
+                    $interval++;
+                    $step = self::$maxBackupTimestampsPerInterval[$interval]['step'];
+                    $nextTimestamp = $prevTimestamp - $step;
+                    if (self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'] == -1)
+                    {
+                        $nextInterval = -1;
+                    } else {
+                        $nextInterval = $time - self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'];
+                    }
+                    $newInterval = true; // we changed the interval -> check same timestamp with new interval
+                }
+            }
+        }
+
+        return $toDelete;
+    }
+
 
     /**
      * Removes a backup
