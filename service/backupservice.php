@@ -520,7 +520,7 @@ class BackupService {
 
         $interval = 0;
         $step = self::$maxBackupTimestampsPerInterval[$interval]['step'];
-        if (self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'] == -1) {
+        if (self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'] === -1) {
             $nextInterval = -1;
         } else {
             $nextInterval = $time - self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'];
@@ -536,7 +536,7 @@ class BackupService {
         {
             $newInterval = true;
             while ($newInterval) {
-                if ($nextInterval == -1 || $prevTimestamp > $nextInterval)
+                if ($nextInterval === -1 || $prevTimestamp > $nextInterval)
                 {
                     if ($timestamp > $nextTimestamp) {
                         //distance between two timestamps too small, mark to delete
@@ -557,7 +557,7 @@ class BackupService {
                     $interval++;
                     $step = self::$maxBackupTimestampsPerInterval[$interval]['step'];
                     $nextTimestamp = $prevTimestamp - $step;
-                    if (self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'] == -1)
+                    if (self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'] === -1)
                     {
                         $nextInterval = -1;
                     } else {
