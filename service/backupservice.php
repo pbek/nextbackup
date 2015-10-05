@@ -19,6 +19,7 @@ class BackupService {
 
     private $appName;
     private $db;
+    private $odb;
     private $configService;
     private $logger;
     private $userId;
@@ -27,9 +28,10 @@ class BackupService {
     const MIN_BACKUP_INTERVAL = 3600;
 
 
-    public function __construct($appName, IDb $db, ConfigService $configService, ILogger $logger, $userId){
+    public function __construct($appName, IDb $db, \OC_DB $odb, ConfigService $configService, ILogger $logger, $userId){
         $this->appName = $appName;
         $this->db = $db;
+        $this->odb = $odb;
         $this->configService = $configService;
         $this->logger = $logger;
         $this->userId = $userId;
@@ -89,7 +91,7 @@ class BackupService {
             $structureFile = "$backupDir/structure.xml";
 
             // get the db structure
-            if ( !\OC_DB::getDbStructure( $structureFile ) )
+            if ( !$this->odb->getDbStructure( $structureFile ) )
             {
                 throw new Exception( "Cannot create db structure in file: $structureFile" );
             }
@@ -278,7 +280,7 @@ class BackupService {
         $this->dropTable( $table );
 
         // update the table structure
-        if ( !\OC_DB::updateDbFromStructure( $structureFile ) )
+        if ( !$this->odb->updateDbFromStructure( $structureFile ) )
         {
             throw new Exception( "Cannot restore table structure from file: $structureFile" );
         }
@@ -302,7 +304,7 @@ class BackupService {
         $fieldList = $this->getFieldListFromTableStructureFile( $structureFile );
 
         // insert all the data
-        $connection = \OC_DB::getConnection();
+        $connection = $this->odb->getConnection();
 
         foreach( $dataDump as $dataLine )
         {
