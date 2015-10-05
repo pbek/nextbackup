@@ -26,6 +26,7 @@ class AppTest extends TestCase {
         parent::setUp();
         $app = new Application();
         $this->container = $app->getContainer();
+        $app->registerSettings();
     }
 
     public function testAppInstalled() {
