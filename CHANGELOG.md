@@ -3,12 +3,12 @@
 ## v0.3.3
 - fixed sort order of backups in selector on admin page after creating a manual backup
 - new backup expiry scheme 
-    - next 24h, one backup every hour (like in the old behaviour)
-    - next 7d, one backup per day
-    - next 30d, one backup per week
-    - next 1y, one backup per 30d
-    - next 10y, one backup per year
-    - until end of time, one backup per 100y
+    - for the next 24h, one backup every hour will be kept (like in the old behaviour)
+    - for the next 7d, one backup per day will be kept
+    - for the next 30d, one backup per week will be kept
+    - for the next 1y, one backup per 30d will be kept
+    - for the next 10y, one backup per year will be kept
+    - until end of time, one backup per 100y will be kept
 - fixed some logging issues
 
 ## v0.3.2
