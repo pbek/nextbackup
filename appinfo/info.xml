@@ -6,11 +6,14 @@
     <description>OwnBackup is the simple database backup solutions for your ownCloud 8.1+ installation. Use this app at your own risk! Data loss may occur! This app is no replacement for a more professional backup solution!</description>
     <licence>AGPL</licence>
     <author>Patrizio Bekerle</author>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
     <namespace>OwnBackup</namespace>
     <category>tools</category>
     <namespace>OwnBackup</namespace>
     <ocsid>170674</ocsid>
+
+    <!-- admin -->
+    <admin>admin</admin>
 
     <!-- documentation -->
     <documentation>

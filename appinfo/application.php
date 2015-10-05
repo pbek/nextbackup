@@ -13,7 +13,6 @@ namespace OCA\OwnBackup\AppInfo;
 
 use OCP\AppFramework\App;
 use OCA\OwnBackup\Controller\AdminController;
-use OC_Util;
 
 class Application extends App
 {
@@ -21,12 +20,7 @@ class Application extends App
     {
         parent::__construct('ownbackup', $urlParams);
 
-        if (OC_Util::getEditionString() === ''){
-            \OCP\App::registerAdmin('ownbackup', 'admin');
-        }
-
         $container = $this->getContainer();
-
         $container->registerService('AdminController', function($c) {
             return new AdminController(
                 $c->query('AppName'),
@@ -35,4 +29,10 @@ class Application extends App
             );
         });
     }
+
+    public function registerSettings() {
+        // Register settings scripts
+        \OCP\App::registerAdmin('ownbackup', 'admin');
+    }
+
 }

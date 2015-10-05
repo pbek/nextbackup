@@ -9,12 +9,13 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-$application = new \OCA\OwnBackup\AppInfo\Application();
+namespace OCA\OwnBackup\AppInfo;
+
+$application = new Application();
 
 /** @var $this \OC\Route\Router */
 $application->registerRoutes($this, [
     'routes' => [
-	   ['name' => 'admin#index', 'url' => '/', 'verb' => 'GET'],
 	   ['name' => 'admin#do_restore_tables', 'url' => '/restore-tables', 'verb' => 'POST'],
 	   ['name' => 'admin#do_fetch_tables', 'url' => '/fetch-tables', 'verb' => 'POST'],
 	   ['name' => 'admin#do_create_backup', 'url' => '/create-backup', 'verb' => 'POST'],
