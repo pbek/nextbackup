@@ -2,6 +2,7 @@
 
 ## v0.3.2
 - fixed the problem that OwnBackup might be shown twice in the admin menu
+- fixed some compliance issues
 
 ## v0.3.1
 - tried to fix a problem with the OwnBackup section not showing up on the admin page
