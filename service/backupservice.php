@@ -27,15 +27,15 @@ class BackupService {
 
     // how many backups do we want to keep in each interval
     private static $maxBackupTimestampsPerInterval = array(
-        // for 24h, keep one backup every hour
+        // for 24h, keep one backup every hour (a maximum of 24 backups are kept that have an interval of at least 1h)
         array('amount' => 24, 'interval' => 3600),
-        // for 7d, keep one backup per day
+        // for 7d, keep one backup per day (a maximum of 7 backups are kept that have an interval of at least 1d)
         array('amount' => 7,  'interval' => 86400),
-        // for 4w, one backup per week
+        // for 4w, one backup per week (a maximum of 4 backups are kept that have an interval of at least 1w)
         array('amount' => 4,  'interval' => 604800),
-        // for 12m, one backup per 30d
+        // for 12m, one backup per 30d (a maximum of 12 backups are kept that have an interval of at least 30d)
         array('amount' => 12, 'interval' => 2592000),
-        // next 2y, one backup per year
+        // next 2y, one backup per year (a maximum of 2 backups are kept that have an interval of at least 1y)
         array('amount' => 2,  'interval' => 31536000),
     );
 
