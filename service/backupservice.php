@@ -508,6 +508,7 @@ class BackupService {
     /**
      * Returns a list of backup timestamps we want to expire
      * Code was borrowed from Storage::getAutoExpireList() and modified
+     * @see OCA\Files_Versions\Storage::getAutoExpireList()
      *
      * @param integer $time
      * @param integer[] $timestamps list of timestamps
@@ -515,6 +516,9 @@ class BackupService {
      */
     protected static function getAutoExpireList( $time, array $timestamps )
     {
+        // descending order seems crucial here
+        rsort( $timestamps, SORT_NUMERIC );
+
         // timestamps we want to delete
         $toDelete = array();
 
@@ -532,16 +536,16 @@ class BackupService {
         $nextTimestamp = $firstTimestamp - $step;
         unset($timestamps[$firstKey]);
 
-        foreach ($timestamps as $key => $timestamp)
+        foreach ($timestamps as $timestamp)
         {
             $newInterval = true;
             while ($newInterval) {
                 if ($nextInterval === -1 || $prevTimestamp > $nextInterval)
                 {
                     if ($timestamp > $nextTimestamp) {
-                        //distance between two timestamps too small, mark to delete
-                        $toDelete[$key] = $timestamp;
-                        \OCP\Util::writeLog('ownbackup', 'Mark to expire '. $timestamp .' next timestamp should be ' . $nextTimestamp . " or smaller. (prevTimestamp: " . $prevTimestamp . "; step: " . $step, \OCP\Util::DEBUG);
+                        // distance between two timestamps too small, mark to delete
+                        $toDelete[] = $timestamp;
+                        \OCP\Util::writeLog('ownbackup', 'Mark to expire backup '. $timestamp .', next timestamp should be ' . $nextTimestamp . " or smaller. (prevTimestamp: " . $prevTimestamp . "; step: " . $step, \OCP\Util::DEBUG);
                     }
                     else
                     {
