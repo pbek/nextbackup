@@ -44,9 +44,9 @@ class BackupJob extends TimedJob
         {
             // create new backup
             $backupService->createDBBackup();
-        }
 
-        // expiring old backups
-        $backupService->expireOldBackups();
+            // expiring old backups
+            $backupService->expireOldBackups();
+        }
     }
 }

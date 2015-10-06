@@ -151,4 +151,60 @@ class BackupIntegrationTest extends TestCase {
         $timestampList = $this->backupService->expireOldBackups();
         $this->assertTrue( is_array( $timestampList ) );
     }
+
+    /**
+     * Tests the auto expire list
+     */
+    public function testAutoExpireList()
+    {
+        // test with 5 hourly backups
+        $timestampList = $this->getTestTimestampList( 5, 3600 );
+        $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
+        $this->assertTrue( is_array( $expiryTimestampList ) );
+        $this->assertEquals( 0, count( $expiryTimestampList ) );
+
+        // test with 26 hourly backups
+        $timestampList = $this->getTestTimestampList( 26, 3600 );
+        $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
+        $this->assertEquals( 1, count( $expiryTimestampList ) );
+
+        // test with 5000 hourly backups
+        $timestampList = $this->getTestTimestampList( 5000, 3600 );
+        $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
+        $this->assertEquals( 4961, count( $expiryTimestampList ) );
+    }
+
+    /**
+     * Returns a list of timestamps
+     *
+     * @param integer $amount
+     * @param integer $interval
+     * @return integer[]
+     */
+    private function getTestTimestampList( $amount, $interval )
+    {
+        $time = time();
+        $timestampList = [];
+
+        for ( $i = 0; $i < $amount; $i++ )
+        {
+            $timestampList[] = $time - ( $interval * $i );
+        }
+
+        return $timestampList;
+    }
+}
+
+/**
+ * Class BackupServiceToTest extends the original class to make it possible to test protected methods
+ */
+class BackupServiceToTest extends OCA\OwnBackup\Service\BackupService
+{
+    /**
+     * @param integer[] $timestamps list of timestamps
+     * @return integer[] containing the list of to be deleted timestamps
+     */
+    public static function callProtectedGetAutoExpireList(array $timestamps) {
+        return self::getAutoExpireList($timestamps);
+    }
 }

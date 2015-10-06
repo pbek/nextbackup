@@ -1,5 +1,13 @@
 # OwnBackup Change Log
 
+## v0.3.4
+- the auto expiration of backups was rewritten again, because the old algorithm didn't work for hourly backups 
+    - for 24h, keep one backup every hour
+    - for 7d, keep one backup per day
+    - for 4w, one backup per week
+    - for 12m, one backup per 30d
+    - next 2y, one backup per year
+
 ## v0.3.3
 - fixed sort order of backups in selector on admin page after creating a manual backup
 - new backup expiry scheme 

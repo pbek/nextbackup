@@ -25,19 +25,18 @@ class BackupService {
     private $logContext;
     private $userId;
 
+    // how many backups do we want to keep in each interval
     private static $maxBackupTimestampsPerInterval = array(
-        // next 24h, one backup every hour
-        array('intervalEndsAfter' => 86400,     'step' => 3600),
-        // next 7d, one backup per day
-        array('intervalEndsAfter' => 604800,    'step' => 86400),
-        // next 30d, one backup per week
-        array('intervalEndsAfter' => 2592000,   'step' => 604800),
-        // next 1y, one backup per 30d
-        array('intervalEndsAfter' => 31536000,  'step' => 2592000),
-        // next 10y, one backup per year
-        array('intervalEndsAfter' => 315360000, 'step' => 31536000),
-        // until end of time, one backup per 100y
-        array('intervalEndsAfter' => -1,        'step' => 3153600000),
+        // for 24h, keep one backup every hour
+        array('amount' => 24, 'interval' => 3600),
+        // for 7d, keep one backup per day
+        array('amount' => 7,  'interval' => 86400),
+        // for 4w, one backup per week
+        array('amount' => 4,  'interval' => 604800),
+        // for 12m, one backup per 30d
+        array('amount' => 12, 'interval' => 2592000),
+        // next 2y, one backup per year
+        array('amount' => 2,  'interval' => 31536000),
     );
 
 
@@ -487,9 +486,8 @@ class BackupService {
         // fetch all backup timestamps
         $backupTimestamps = $this->fetchBackupTimestamps();
 
-        $time = time();
         // get the list of backup timestamps we want to expire
-        $removeTimestampList = self::getAutoExpireList( $time, $backupTimestamps );
+        $removeTimestampList = self::getAutoExpireList( $backupTimestamps );
         $removedTimestampList = [];
 
         // expire old backups
@@ -506,73 +504,79 @@ class BackupService {
     }
 
     /**
-     * Returns a list of backup timestamps we want to expire
-     * Code was borrowed from Storage::getAutoExpireList() and modified
-     * @see OCA\Files_Versions\Storage::getAutoExpireList()
+     * Returns a list of timestamp meeting a certain interval
      *
-     * @param integer $time
-     * @param integer[] $timestamps list of timestamps
-     * @return integer[] containing the list of to be deleted timestamps
+     * @param integer[] $timestamps
+     * @param integer $interval
+     * @param integer|null $keepAmount
+     * @return integer[]
      */
-    protected static function getAutoExpireList( $time, array $timestamps )
+    protected static function findIntervalTimestamps( array $timestamps, $interval, $keepAmount = null )
     {
-        // descending order seems crucial here
-        rsort( $timestamps, SORT_NUMERIC );
-
-        // timestamps we want to delete
-        $toDelete = array();
-
-        $interval = 0;
-        $step = self::$maxBackupTimestampsPerInterval[$interval]['step'];
-        if (self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'] === -1) {
-            $nextInterval = -1;
-        } else {
-            $nextInterval = $time - self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'];
+        if ( count( $timestamps ) === 0 ) {
+            return [];
         }
 
-        $firstTimestamp = reset($timestamps);
-        $firstKey = key($timestamps);
-        $prevTimestamp = $firstTimestamp;
-        $nextTimestamp = $firstTimestamp - $step;
-        unset($timestamps[$firstKey]);
+        // descending order is crucial here
+        rsort( $timestamps, SORT_NUMERIC );
 
-        foreach ($timestamps as $timestamp)
+        // keep all if not set
+        if ( is_null( $keepAmount ) ) {
+            $keepAmount = count( $timestamps );
+        }
+
+        $resultList = [];
+        $lastTimestamp = $timestamps[0] + $interval;
+        $count = 0;
+
+        foreach ( $timestamps as $timestamp )
         {
-            $newInterval = true;
-            while ($newInterval) {
-                if ($nextInterval === -1 || $prevTimestamp > $nextInterval)
-                {
-                    if ($timestamp > $nextTimestamp) {
-                        // distance between two timestamps too small, mark to delete
-                        $toDelete[] = $timestamp;
-                        \OCP\Util::writeLog('ownbackup', 'Mark to expire backup '. $timestamp .', next timestamp should be ' . $nextTimestamp . " or smaller. (prevTimestamp: " . $prevTimestamp . "; step: " . $step, \OCP\Util::DEBUG);
-                    }
-                    else
-                    {
-                        $nextTimestamp = $timestamp - $step;
-                        $prevTimestamp = $timestamp;
-                    }
-                    // timestamp checked so we can move to the next one
-                    $newInterval = false;
-                }
-                // time to move on to the next interval
-                else
-                {
-                    $interval++;
-                    $step = self::$maxBackupTimestampsPerInterval[$interval]['step'];
-                    $nextTimestamp = $prevTimestamp - $step;
-                    if (self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'] === -1)
-                    {
-                        $nextInterval = -1;
-                    } else {
-                        $nextInterval = $time - self::$maxBackupTimestampsPerInterval[$interval]['intervalEndsAfter'];
-                    }
-                    $newInterval = true; // we changed the interval -> check same timestamp with new interval
+            if ( $timestamp <= ( $lastTimestamp - $interval ) )
+            {
+                $resultList[] = $timestamp;
+                $lastTimestamp = $timestamp;
+                $count++;
+
+                // check if we have enough timestamps
+                if ( $count >= $keepAmount ) {
+                    break;
                 }
             }
         }
 
-        return $toDelete;
+        return $resultList;
+    }
+
+    /**
+     * Returns a list of backup timestamps we want to expire
+     *
+     * @param integer[] $timestamps list of timestamps
+     * @return integer[] containing the list of to be deleted timestamps
+     */
+    protected static function getAutoExpireList( array $timestamps )
+    {
+        if ( count( $timestamps ) === 0 ) {
+            return [];
+        }
+
+        $timestampsToKeep = [];
+        // check all intervals
+        foreach( self::$maxBackupTimestampsPerInterval as $intervalData )
+        {
+            $keepAmount = (int) $intervalData["amount"];
+            $interval = (int) $intervalData["interval"];
+
+            // get all timestamps we need for this interval
+            $foundTimestamps = self::findIntervalTimestamps( $timestamps, $interval, $keepAmount );
+            
+            // merge the found timestamps with the current timestamps we need to keep
+            $timestampsToKeep = array_merge( $timestampsToKeep, $foundTimestamps );
+        }
+
+        // get the timestamps we want to expire
+        $timestampsToDelete = array_diff( $timestamps, $timestampsToKeep );
+
+        return $timestampsToDelete;
     }
 
 

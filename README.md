@@ -25,12 +25,11 @@ Place this app in your `owncloud/apps/` directory.
 - OwnBackup creates backups of your ownCloud tables hourly via cronjob or manually.
 - You are able to choose which tables from a certain backup you want to restore.
 - This is OwnBackup's backup expiry scheme:
-    - for the next 24h, one backup every hour will be kept
-    - for the next 7d, one backup per day will be kept
-    - for the next 30d, one backup per week will be kept
-    - for the next 1y, one backup per 30d will be kept
-    - for the next 10y, one backup per year will be kept
-    - until end of time, one backup per 100y will be kept
+    - for 24h, keep one backup every hour
+    - for 7d, keep one backup per day
+    - for 4w, one backup per week
+    - for 12m, one backup per 30d
+    - next 2y, one backup per year
 - If the Zlib library is present the backups get compressed with gzip.
 - The backup should work with all databases, please report any problems. 
 
