@@ -27,9 +27,9 @@ Place this app in your `owncloud/apps/` directory.
 - This is OwnBackup's backup expiry scheme:
     - for 24h, keep one backup every hour
     - for 7d, keep one backup per day
-    - for 4w, one backup per week
-    - for 12m, one backup per 30d
-    - next 2y, one backup per year
+    - for 4w, keep one backup per week
+    - for 12m, keep one backup per 30d
+    - next 2y, keep one backup per year
 - If the Zlib library is present the backups get compressed with gzip.
 - The backup should work with all databases, please report any problems. 
 
