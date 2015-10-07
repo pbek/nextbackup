@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## v0.3.5
+- some improvements and fixes for the automatic backup expiration
+
 ## v0.3.4
 - the auto expiration of backups was rewritten again, because the old algorithm didn't work for hourly backups 
     - for 24h, keep one backup every hour

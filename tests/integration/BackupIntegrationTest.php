@@ -160,18 +160,28 @@ class BackupIntegrationTest extends TestCase {
         // test with 5 hourly backups
         $timestampList = $this->getTestTimestampList( 5, 3600 );
         $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
-        $this->assertTrue( is_array( $expiryTimestampList ) );
-        $this->assertEquals( 0, count( $expiryTimestampList ) );
+        $this->assertTrue( is_array( $expiryTimestampList ), "test if is array" );
+        $this->assertEquals( 0, count( $expiryTimestampList ), "test with 5 hourly backups" );
 
         // test with 26 hourly backups
         $timestampList = $this->getTestTimestampList( 26, 3600 );
         $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
-        $this->assertEquals( 1, count( $expiryTimestampList ) );
+        $this->assertEquals( 0, count( $expiryTimestampList ), "test with 26 hourly backups" );
+
+        // test with 27 hourly backups
+        $timestampList = $this->getTestTimestampList( 27, 3600 );
+        $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
+        $this->assertEquals( 1, count( $expiryTimestampList ), "test with 27 hourly backups" );
+
+        // test with 48 hourly backups
+        $timestampList = $this->getTestTimestampList( 48, 3600 );
+        $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
+        $this->assertEquals( 22, count( $expiryTimestampList ), "test with 48 hourly backups" );
 
         // test with 5000 hourly backups
         $timestampList = $this->getTestTimestampList( 5000, 3600 );
         $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
-        $this->assertEquals( 4961, count( $expiryTimestampList ) );
+        $this->assertEquals( 4960, count( $expiryTimestampList ), "test with 5000 hourly backups" );
     }
 
     /**

@@ -531,6 +531,7 @@ class BackupService {
 
         foreach ( $timestamps as $timestamp )
         {
+            // gather timestamps in our interval range
             if ( $timestamp <= ( $lastTimestamp - $interval ) )
             {
                 $resultList[] = $timestamp;
@@ -541,6 +542,16 @@ class BackupService {
                 if ( $count >= $keepAmount ) {
                     break;
                 }
+            }
+        }
+
+        // if we don't have enough timestamps to keep we want to keep at least the last (lowest) timestamp to build up the list after future backups
+        if ( $count < $keepAmount )
+        {
+            $timestamp = end( $timestamps );
+            if ( !in_array( $timestamp, $resultList ) )
+            {
+                $resultList[] = $timestamp;
             }
         }
 
