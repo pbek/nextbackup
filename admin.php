@@ -13,9 +13,8 @@
 namespace OCA\OwnBackup;
 
 use OCA\OwnBackup\AppInfo\Application;
-use OCA\OwnBackup\Controller\AdminController;
 
 $app = new Application();
 $container = $app->getContainer();
-$response = $container->query(AdminController::class)->index();
+$response = $container->query('\OCA\OwnBackup\Controller\AdminController')->index();
 return $response->render();
