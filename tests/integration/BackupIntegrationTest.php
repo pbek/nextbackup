@@ -181,7 +181,7 @@ class BackupIntegrationTest extends TestCase {
         // test with 5000 hourly backups
         $timestampList = $this->getTestTimestampList( 5000, 3600 );
         $expiryTimestampList = BackupServiceToTest::callProtectedGetAutoExpireList( $timestampList );
-        $this->assertEquals( 4960, count( $expiryTimestampList ), "test with 5000 hourly backups" );
+        $this->assertEquals( 4954, count( $expiryTimestampList ), "test with 5000 hourly backups" );
     }
 
     /**

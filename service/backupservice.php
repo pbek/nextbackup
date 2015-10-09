@@ -559,6 +559,52 @@ class BackupService {
     }
 
     /**
+     * Returns a list of timestamp meeting a certain interval, but from oldest to newest
+     * This is a fallback for @see BackupService::findIntervalTimestamps
+     *
+     * @param integer[] $timestamps
+     * @param integer $interval
+     * @param integer|null $keepAmount
+     * @return integer[]
+     */
+    protected static function findIntervalTimestampsFallback( array $timestamps, $interval, $keepAmount = null )
+    {
+        if ( count( $timestamps ) === 0 ) {
+            return [];
+        }
+
+        // ascending order is crucial here
+        sort( $timestamps, SORT_NUMERIC );
+
+        // keep all if not set
+        if ( is_null( $keepAmount ) ) {
+            $keepAmount = count( $timestamps );
+        }
+
+        $resultList = [];
+        $lastTimestamp = $timestamps[0] - $interval;
+        $count = 0;
+
+        foreach ( $timestamps as $timestamp )
+        {
+            // gather timestamps in our interval range
+            if ( $timestamp >= ( $lastTimestamp + $interval ) )
+            {
+                $resultList[] = $timestamp;
+                $lastTimestamp = $timestamp;
+                $count++;
+
+                // check if we have enough timestamps
+                if ( $count >= $keepAmount ) {
+                    break;
+                }
+            }
+        }
+
+        return $resultList;
+    }
+
+    /**
      * Returns a list of backup timestamps we want to expire
      *
      * @param integer[] $timestamps list of timestamps
@@ -579,7 +625,14 @@ class BackupService {
 
             // get all timestamps we need for this interval
             $foundTimestamps = self::findIntervalTimestamps( $timestamps, $interval, $keepAmount );
-            
+
+            // we got too few timestamps lets try it the other way around to make sure we keep enough over the time
+            if ( count( $foundTimestamps ) < $keepAmount )
+            {
+                $moreFoundTimestamps = self::findIntervalTimestampsFallback( $timestamps, $interval, $keepAmount );
+                $foundTimestamps = array_merge( $foundTimestamps, $moreFoundTimestamps );
+            }
+
             // merge the found timestamps with the current timestamps we need to keep
             $timestampsToKeep = array_merge( $timestampsToKeep, $foundTimestamps );
         }

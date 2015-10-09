@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## v0.3.7
+- more improvements for the automatic backup expiration
+
 ## v0.3.6
 - small change in admin.php after a user reported problems with it
 
