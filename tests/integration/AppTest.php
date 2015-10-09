@@ -34,4 +34,12 @@ class AppTest extends TestCase {
         $this->assertTrue($appManager->isInstalled('ownbackup'));
     }
 
+    /**
+     * Tests the OwnBackup admin section
+     */
+    public function testAdminSection() {
+        $resultHtml = include "admin.php";
+        $this->assertContains( '<div id="ownbackup">', $resultHtml );
+        $this->assertContains( '<div class="section">', $resultHtml );
+    }
 }
