@@ -2,7 +2,7 @@
 
 [Changelog](https://github.com/pbek/ownbackup/blob/develop/CHANGELOG.md) | 
 [Issues](https://github.com/pbek/ownbackup/issues) | 
-[Download](https://apps.owncloud.com/content/show.php?content=170674)
+[Download](https://apps.owncloud.com/content/show.php?content=170674) |
 [ownCloud Apps page](https://apps.owncloud.com/content/show.php?content=170674)
 
 [![Build Status](https://travis-ci.org/pbek/ownbackup.svg?branch=master)](https://travis-ci.org/pbek/ownbackup)
