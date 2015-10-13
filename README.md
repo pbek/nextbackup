@@ -24,11 +24,6 @@ tar xvfz 170674-ownbackup.tar.gz
 ## Screenshot
 ![Screenhot](screenshot.png)
 
-## Disclaimer
-
-- Use this app at your own risk! Data loss may occur!
-- This app is no replacement for a more professional backup solution!
-
 ## Features
 
 - OwnBackup creates backups of your ownCloud tables hourly via cronjob or manually.
@@ -41,6 +36,11 @@ tar xvfz 170674-ownbackup.tar.gz
     - for 2y one backup per year is kept
 - If the Zlib library is present the backups get compressed with gzip.
 - The backup should work with all databases, please report any problems. 
+
+## Disclaimer
+
+- Use this app at your own risk! Data loss may occur!
+- This app is no replacement for a more professional backup solution!
 
 ## Limitations
 
