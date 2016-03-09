@@ -24,6 +24,8 @@ class BackupService {
     private $logger;
     private $logContext;
     private $userId;
+    private $server;
+
 
     // how many backups do we want to keep in each interval
     private static $maxBackupTimestampsPerInterval = array(
@@ -44,7 +46,7 @@ class BackupService {
     const MIN_BACKUP_INTERVAL = 3600;
 
 
-    public function __construct($appName, IDb $db, \OC_DB $odb, ConfigService $configService, ILogger $logger, $userId){
+    public function __construct($appName, IDb $db, \OC_DB $odb, \OC\Server $server, ConfigService $configService, ILogger $logger, $userId){
         $this->appName = $appName;
         $this->db = $db;
         $this->odb = $odb;
@@ -52,6 +54,7 @@ class BackupService {
         $this->logger = $logger;
         $this->logContext = ['app' => 'ownbackup'];
         $this->userId = $userId;
+        $this->server = $server;
     }
 
     /**
@@ -323,7 +326,7 @@ class BackupService {
         $fieldList = $this->getFieldListFromTableStructureFile( $structureFile );
 
         // insert all the data
-        $connection = \OC::$server->getDatabaseConnection();
+        $connection = $this->server->getDatabaseConnection();
 
         foreach( $dataDump as $dataLine )
         {
