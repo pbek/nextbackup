@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## v0.3.8
+- made the database restore functionality work again on ownCloud 9.0
+
 ## v0.3.7
 - more improvements for the automatic backup expiration
 

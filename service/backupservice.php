@@ -323,7 +323,7 @@ class BackupService {
         $fieldList = $this->getFieldListFromTableStructureFile( $structureFile );
 
         // insert all the data
-        $connection = $this->odb->getConnection();
+        $connection = \OC::$server->getDatabaseConnection();
 
         foreach( $dataDump as $dataLine )
         {
