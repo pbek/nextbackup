@@ -13,6 +13,7 @@ namespace OCA\OwnBackup\Service;
 use Exception;
 use OCP\IDb;
 use OCA\OwnBackup\Service;
+use OCP\IDBConnection;
 use OCP\ILogger;
 
 class BackupService {
@@ -24,7 +25,7 @@ class BackupService {
     private $logger;
     private $logContext;
     private $userId;
-    private $server;
+    private $dataBaseConnection;
 
 
     // how many backups do we want to keep in each interval
@@ -46,7 +47,18 @@ class BackupService {
     const MIN_BACKUP_INTERVAL = 3600;
 
 
-    public function __construct($appName, IDb $db, \OC_DB $odb, \OC\Server $server, ConfigService $configService, ILogger $logger, $userId){
+    /**
+     * BackupService constructor
+     *
+     * @param $appName
+     * @param IDb $db
+     * @param \OC_DB $odb
+     * @param ConfigService $configService
+     * @param ILogger $logger
+     * @param $userId
+     * @param $dataBaseConnection
+     */
+    public function __construct($appName, IDb $db, \OC_DB $odb, IDBConnection $dataBaseConnection, ConfigService $configService, ILogger $logger, $userId){
         $this->appName = $appName;
         $this->db = $db;
         $this->odb = $odb;
@@ -54,7 +66,7 @@ class BackupService {
         $this->logger = $logger;
         $this->logContext = ['app' => 'ownbackup'];
         $this->userId = $userId;
-        $this->server = $server;
+        $this->dataBaseConnection = $dataBaseConnection;
     }
 
     /**
@@ -326,8 +338,6 @@ class BackupService {
         $fieldList = $this->getFieldListFromTableStructureFile( $structureFile );
 
         // insert all the data
-        $connection = $this->server->getDatabaseConnection();
-
         foreach( $dataDump as $dataLine )
         {
             $dataHash = [];
@@ -340,7 +350,7 @@ class BackupService {
             }
 
             // insert the data into table
-            $connection->insertIfNotExist( $table, $dataHash );
+            $this->dataBaseConnection->insertIfNotExist( $table, $dataHash );
         }
         $this->db->commit();
 
