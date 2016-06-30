@@ -123,6 +123,8 @@ class BackupService {
             $structureFile = "$backupDir/structure.xml";
 
             // get the db structure
+            // Warning: does not seem to support `longblob`!
+            // @see: https://github.com/owncloud/core/issues/25316
             if ( !$this->odb->getDbStructure( $structureFile ) )
             {
                 throw new Exception( "Cannot create db structure in file: $structureFile" );
@@ -349,8 +351,15 @@ class BackupService {
                 $dataHash[$fieldName] = $dataLine[$key];
             }
 
-            // insert the data into table
-            $this->dataBaseConnection->insertIfNotExist( $table, $dataHash );
+            try
+            {
+                // insert the data into table
+                $this->dataBaseConnection->insertIfNotExist( $table, $dataHash );
+            }
+            catch( \Exception $e )
+            {
+                throw new Exception( "Inserting data row failed: " . $e->getMessage() );
+            }
         }
         $this->db->commit();
 
