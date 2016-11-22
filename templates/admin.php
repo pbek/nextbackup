@@ -50,5 +50,12 @@
             <div class="icon-loading wait-spinner">&nbsp;</div>
         </div>
         <div id="ownbackup-cover"></div>
+        <div class="box">
+            <em>
+                <?php p($l->t("Don't forget to setup a cronjob to get periodic backups."));?><br />
+                <?php p($l->t("If you want an easy Webcron solution you might want to try"));?>:
+                <a href="https://www.easycron.com?ref=70375" target="_blank">EasyCron</a>
+            </em>
+        </div>
     </div>
 </div>

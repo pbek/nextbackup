@@ -1,5 +1,13 @@
 # OwnBackup Change Log
 
+## 16.11.0
+- fixed an `internal server error` on ownCloud 9.1.2
+  (for [Issue #7](https://github.com/pbek/ownbackup/issues/7))
+- added a notice to setup a cronjob to get periodic backups
+- switched release versioning to a more *rolling release style*,
+  so it doesn't get confused with semantic versioning
+    - `<year of release>.<month of release>.<release number in the month>` 
+
 ## v0.3.8
 - made the database restore functionality work again on ownCloud 9.0
 
