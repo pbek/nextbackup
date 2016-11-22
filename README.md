@@ -5,7 +5,7 @@
 [Download](https://apps.owncloud.com/content/show.php?content=170674) |
 [ownCloud Apps page](https://apps.owncloud.com/content/show.php?content=170674)
 
-[![Build Status](https://travis-ci.org/pbek/ownbackup.svg?branch=master)](https://travis-ci.org/pbek/ownbackup)
+[![Build Status](https://travis-ci.org/pbek/ownbackup.svg?branch=develop)](https://travis-ci.org/pbek/ownbackup)
 [![Code Climate](https://codeclimate.com/github/pbek/ownbackup/badges/gpa.svg)](https://codeclimate.com/github/pbek/ownbackup)
 [![Test Coverage](https://codeclimate.com/github/pbek/ownbackup/badges/coverage.svg)](https://codeclimate.com/github/pbek/ownbackup/coverage)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/04f33cd9-67b9-4a88-92d0-0c98944d1a8f/mini.png)](https://insight.sensiolabs.com/projects/04f33cd9-67b9-4a88-92d0-0c98944d1a8f)
