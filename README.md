@@ -13,7 +13,7 @@
 
 **OwnBackup** is the **simple database backup solution** for your **[ownCloud](http://www.owncloud.com/)** 8.1+ installation.
 
-It's main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.  
+Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.  
 
 [Download](https://apps.owncloud.com/content/show.php/QOwnNotesAPI?content=170674) the app package into your ownCloud app folder (`owncloud/apps/`) and unpack it there with:
 
