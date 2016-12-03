@@ -1,15 +1,23 @@
-<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
 <info>
     <!-- metadata -->
     <id>ownbackup</id>
     <name>OwnBackup</name>
     <description>OwnBackup is the simple database backup solutions for your ownCloud 8.1+ or Nextcloud installation.</description>
+    <summary>OwnBackup is the simple database backup solution for your Nextcloud installation.</summary>
+    <description><![CDATA[OwnBackup is the simple database backup solution for your Nextcloud installation.
+
+Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.
+
+- Use this app at your own risk! Data loss may occur!
+- This app is no replacement for a more professional backup solution!]]></description>
     <licence>AGPL</licence>
-    <author>Patrizio Bekerle</author>
+    <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
     <version>16.11.0</version>
     <namespace>OwnBackup</namespace>
     <category>tools</category>
     <ocsid>170674</ocsid>
+    <screenshot>https://github.com/pbek/ownbackup/blob/develop/screenshot.png</screenshot>
 
     <!-- admin -->
     <admin>admin</admin>
