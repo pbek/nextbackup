@@ -3,7 +3,8 @@
 [Changelog](https://github.com/pbek/ownbackup/blob/develop/CHANGELOG.md) | 
 [Issues](https://github.com/pbek/ownbackup/issues) | 
 [Download](https://apps.owncloud.com/content/show.php?content=170674) |
-[ownCloud Apps page](https://apps.owncloud.com/content/show.php?content=170674)
+[ownCloud Apps page](https://apps.owncloud.com/content/show.php?content=170674) |
+[Nextcloud Apps page](https://apps.nextcloud.com/apps/ownbackup)
 
 [![Build Status](https://travis-ci.org/pbek/ownbackup.svg?branch=develop)](https://travis-ci.org/pbek/ownbackup)
 [![Code Climate](https://codeclimate.com/github/pbek/ownbackup/badges/gpa.svg)](https://codeclimate.com/github/pbek/ownbackup)
@@ -15,10 +16,18 @@
 
 Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.  
 
-[Download](https://apps.owncloud.com/content/show.php/QOwnNotesAPI?content=170674) the app package into your ownCloud app folder (`owncloud/apps/`) and unpack it there with:
+## Installation
+
+Clone the app into your Nextcloud / ownCloud apps directory:
 
 ```bash
-tar xvfz 170674-ownbackup.tar.gz
+git clone https://github.com/pbek/ownbackup.git
+```
+
+Activate the App:
+
+```bash
+occ app:enable ownbackup
 ```
 
 ## Screenshot
