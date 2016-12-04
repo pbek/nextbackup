@@ -18,7 +18,7 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 
 ## Installation
 
-Clone the app into your Nextcloud / ownCloud apps directory:
+Clone the App into your Nextcloud / ownCloud apps directory:
 
 ```bash
 git clone https://github.com/pbek/ownbackup.git
