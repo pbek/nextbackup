@@ -55,6 +55,7 @@ occ app:enable ownbackup
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!
+- This software is not affiliate with [www.ownbackup.com](https://www.ownbackup.com/), I'm sorry for the name clash.
 
 This SOFTWARE PRODUCT is provided by THE PROVIDER "as is" and "with all faults." THE PROVIDER makes no representations or warranties of any kind concerning the safety, suitability, lack of viruses, inaccuracies, typographical errors, or other harmful components of this SOFTWARE PRODUCT. 
 
