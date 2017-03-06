@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## 17.03.0
+- integrity check fixes
+
 ## 16.11.0
 - fixed an `internal server error` on ownCloud 9.1.2
   (for [Issue #7](https://github.com/pbek/ownbackup/issues/7))
