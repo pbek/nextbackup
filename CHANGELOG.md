@@ -1,6 +1,6 @@
 # OwnBackup Change Log
 
-## 17.03.0
+## 17.3.0
 - integrity check fixes
 
 ## 16.11.0
