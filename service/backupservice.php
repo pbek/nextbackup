@@ -11,7 +11,6 @@
 namespace OCA\OwnBackup\Service;
 
 use Exception;
-use OCP\IDb;
 use OCA\OwnBackup\Service;
 use OCP\IDBConnection;
 use OCP\ILogger;
@@ -19,13 +18,12 @@ use OCP\ILogger;
 class BackupService {
 
     private $appName;
-    private $db;
     private $odb;
     private $configService;
     private $logger;
     private $logContext;
     private $userId;
-    private $dataBaseConnection;
+    private $db;
 
 
     // how many backups do we want to keep in each interval
@@ -51,22 +49,20 @@ class BackupService {
      * BackupService constructor
      *
      * @param $appName
-     * @param IDb $db
      * @param \OC_DB $odb
      * @param ConfigService $configService
      * @param ILogger $logger
      * @param $userId
-     * @param $dataBaseConnection
+     * @param $db
      */
-    public function __construct($appName, IDb $db, \OC_DB $odb, IDBConnection $dataBaseConnection, ConfigService $configService, ILogger $logger, $userId){
+    public function __construct($appName, \OC_DB $odb, IDBConnection $db, ConfigService $configService, ILogger $logger, $userId){
         $this->appName = $appName;
-        $this->db = $db;
         $this->odb = $odb;
         $this->configService = $configService;
         $this->logger = $logger;
         $this->logContext = ['app' => 'ownbackup'];
         $this->userId = $userId;
-        $this->dataBaseConnection = $dataBaseConnection;
+        $this->db = $db;
     }
 
     /**
@@ -88,13 +84,13 @@ class BackupService {
     private function getTableSerializedDataDump( $table )
     {
         $sql = "SELECT * FROM `$table`";
-        $query = $this->db->prepareQuery( $sql );
-        $result = $query->execute();
+        $query = $this->db->executeQuery( $sql );
+        $result = $query->fetchAll();
 
         return serialize( array_map( function( $array ) {
             // we want no field names, just the values, to safe space
             return array_values( $array );
-        }, $result->fetchAll() ) );
+        }, $result ) );
     }
 
     /**
@@ -354,7 +350,7 @@ class BackupService {
             try
             {
                 // insert the data into table
-                $this->dataBaseConnection->insertIfNotExist( $table, $dataHash );
+                $this->db->insertIfNotExist( $table, $dataHash );
             }
             catch( \Exception $e )
             {
