@@ -11,7 +11,7 @@
 
 use OCA\OwnBackup\Service\BackupService;
 use OCA\OwnBackup\AppInfo\Application;
-use OCP\IDb;
+use OCP\IDBConnection;
 use Test\TestCase;
 
 
@@ -27,7 +27,7 @@ class BackupIntegrationTest extends TestCase {
     /** @var BackupService $backupService */
     private $backupService;
 
-    /** @var IDb $backupService */
+    /** @var IDBConnection $db */
     private $db;
 
     // the table we want to test
@@ -41,7 +41,7 @@ class BackupIntegrationTest extends TestCase {
         $this->container = $app->getContainer();
 
         $this->backupService = $this->container->query('OCA\OwnBackup\Service\BackupService');
-        $this->db = $this->container->query('OCP\IDb');
+        $this->db = $this->container->query('OCP\IDBConnection');
     }
 
     /**

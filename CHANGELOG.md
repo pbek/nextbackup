@@ -1,5 +1,10 @@
 # OwnBackup Change Log
 
+## 17.5.0
+- migrated from IDB to IDBConnection for Nextcloud 12
+  (for [Issue #17](https://github.com/pbek/ownbackup/issues/17))
+- enabled and tested app for ownCloud 10 and Nextcloud 12
+
 ## 17.3.0
 - integrity check fixes
 

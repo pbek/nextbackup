@@ -12,7 +12,7 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 - This app is no replacement for a more professional backup solution!]]></description>
     <licence>AGPL</licence>
     <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
-    <version>17.3.0</version>
+    <version>17.5.0</version>
     <namespace>OwnBackup</namespace>
     <category>tools</category>
     <ocsid>170674</ocsid>
@@ -33,8 +33,8 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 
     <!-- dependencies -->
     <dependencies>
-        <owncloud min-version="8.1" max-version="10.2" />
-        <nextcloud min-version="10" max-version="12" />
+        <owncloud min-version="8.1" max-version="11" />
+        <nextcloud min-version="10" max-version="13" />
         <php min-version="5.4" />
         <lib>zlib</lib>
         <database>pgsql</database>

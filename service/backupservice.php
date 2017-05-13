@@ -11,7 +11,6 @@
 namespace OCA\OwnBackup\Service;
 
 use Exception;
-use OCA\OwnBackup\Service;
 use OCP\IDBConnection;
 use OCP\ILogger;
 
