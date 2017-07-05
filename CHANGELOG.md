@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## 17.7.0
+- changes to get the app into the ownCloud Marketplace
+
 ## 17.5.0
 - migrated from IDB to IDBConnection for Nextcloud 12
   (for [Issue #17](https://github.com/pbek/ownbackup/issues/17))
