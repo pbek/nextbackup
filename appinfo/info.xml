@@ -10,13 +10,10 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!]]></description>
-    <version>18.8.0</version>
+    <version>18.8.1</version>
     <licence>agpl</licence>
     <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
     <namespace>OwnBackup</namespace>
-
-    <!-- admin -->
-    <admin>admin</admin>
 
     <!-- documentation -->
     <documentation>
@@ -32,17 +29,17 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 
     <!-- dependencies -->
     <dependencies>
-        <owncloud min-version="8.2" max-version="10.1" />
-        <nextcloud min-version="10" max-version="14" />
         <php min-version="5.4" />
-        <lib>zlib</lib>
         <database>pgsql</database>
         <database>sqlite</database>
         <database>mysql</database>
+        <lib>zlib</lib>
+        <owncloud min-version="8.2" max-version="10.1" />
+        <nextcloud min-version="10" max-version="14" />
     </dependencies>
 
     <!-- cron jobs -->
-    <cron>
+    <background-jobs>
         <job>OCA\OwnBackup\Jobs\BackupJob</job>
-    </cron>
+    </background-jobs>
 </info>

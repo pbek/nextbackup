@@ -14,7 +14,6 @@ namespace OCA\OwnBackup\Jobs;
 use OC\BackgroundJob\TimedJob;
 use OCA\OwnBackup\AppInfo\Application;
 use OCA\OwnBackup\Service\BackupService;
-use OCP\App;
 
 class BackupJob extends TimedJob
 {
@@ -25,10 +24,11 @@ class BackupJob extends TimedJob
 
     /**
      * @param array $arguments
+     * @throws \OCP\AppFramework\QueryException
      */
     public function run( $arguments )
     {
-        if ( !App::isEnabled( 'ownbackup' ) )
+        if ( !\OC::$server->getAppManager()->isInstalled( 'ownbackup' ) )
         {
             return;
         }

@@ -32,6 +32,7 @@ class Application extends App
 
     public function registerSettings() {
         // Register settings scripts
+        // TODO: implement with new admin system?
         \OCP\App::registerAdmin('ownbackup', 'admin');
     }
 
