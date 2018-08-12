@@ -69,7 +69,7 @@ before_script:
   - php -S localhost:8080 &
   - cd apps/$APP_NAME
   #- composer self-update
-  - touch composer.json
+  - cp ../../composer.json .
   - composer require codeclimate/php-test-reporter --dev
 
 script:
