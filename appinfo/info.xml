@@ -10,13 +10,10 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!]]></description>
-    <licence>AGPL</licence>
+    <version>18.8.0</version>
+    <licence>agpl</licence>
     <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
-    <version>17.7.0</version>
     <namespace>OwnBackup</namespace>
-    <category>tools</category>
-    <ocsid>170674</ocsid>
-    <screenshot>https://raw.githubusercontent.com/pbek/ownbackup/develop/screenshot.png</screenshot>
 
     <!-- admin -->
     <admin>admin</admin>
@@ -27,14 +24,16 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
     </documentation>
 
     <!-- resources -->
+    <category>tools</category>
     <website>https://github.com/pbek/ownbackup</website>
     <bugs>https://github.com/pbek/ownbackup/issues</bugs>
     <repository type="git">https://github.com/pbek/ownbackup.git</repository>
+    <screenshot>https://raw.githubusercontent.com/pbek/ownbackup/develop/screenshot.png</screenshot>
 
     <!-- dependencies -->
     <dependencies>
-        <owncloud min-version="8.2" max-version="10.0" />
-        <nextcloud min-version="10" max-version="13" />
+        <owncloud min-version="8.2" max-version="10.1" />
+        <nextcloud min-version="10" max-version="14" />
         <php min-version="5.4" />
         <lib>zlib</lib>
         <database>pgsql</database>
