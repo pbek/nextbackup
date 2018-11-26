@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## 18.11.0
+- enabled and tested app for Nextcloud 15
+
 ## 18.8.1
 - more changes for Nextcloud 14
 
