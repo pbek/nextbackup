@@ -10,7 +10,7 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!]]></description>
-    <version>18.11.0</version>
+    <version>19.1.0</version>
     <licence>agpl</licence>
     <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
     <namespace>OwnBackup</namespace>
@@ -34,7 +34,7 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
         <database>sqlite</database>
         <database>mysql</database>
         <lib>zlib</lib>
-        <owncloud min-version="8.2" max-version="10.1" />
+        <owncloud min-version="8.2" max-version="11" />
         <nextcloud min-version="10" max-version="15" />
     </dependencies>
 
