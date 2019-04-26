@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## 19.4.0
+- enabled app for Nextcloud 16
+
 ## 19.1.0
 - enabled app for all minor versions of ownCloud 10
 
