@@ -3,7 +3,7 @@
 [Changelog](https://github.com/pbek/ownbackup/blob/develop/CHANGELOG.md) | 
 [Issues](https://github.com/pbek/ownbackup/issues) | 
 [Download](https://github.com/pbek/ownbackup/releases) |
-[ownCloud Apps page](https://apps.owncloud.com/content/show.php?content=170674) |
+[ownCloud Marketplace page](https://marketplace.owncloud.com/apps/ownbackup) |
 [Nextcloud Apps page](https://apps.nextcloud.com/apps/ownbackup)
 
 [![Build Status](https://travis-ci.org/pbek/ownbackup.svg?branch=develop)](https://travis-ci.org/pbek/ownbackup)
