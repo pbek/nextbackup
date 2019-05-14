@@ -49,7 +49,7 @@ occ app:enable ownbackup
 
 ## Limitations
 
-- I've only tested the app with *Cron* so far, please report any troubles with *Webcron* or *AJAX*.
+- I've only tested the app with [Cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) so far, please report any troubles with *Webcron* or *AJAX*.
 - One main limitation for the size that your DB can have to be backed up will be the `memory_limit` and the `max_execution_time` of your PHP installation!
 
 ## Disclaimer
