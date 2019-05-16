@@ -36,7 +36,7 @@ occ app:enable ownbackup
 
 ## Features
 
-- OwnBackup creates backups of your ownCloud tables hourly via cronjob or manually.
+- OwnBackup creates backups of your Nextcloud / ownCloud tables hourly via cronjob or manually.
 - You are able to choose which tables from a certain backup you want to restore.
 - OwnBackup expires your backups automatically.
     - for 24h one backup every hour is kept
