@@ -297,6 +297,11 @@ class BackupService {
             return false;
         }
 
+        if ( preg_match( '/[\.\/]/', $table ) )
+        {
+            throw new Exception( "Invalid table name: $table" );
+        }
+
         // get the table structure file name
         $structureFile = $this->configService->getBackupBaseDirectory() . "/$timestamp/$table/structure.xml";
 

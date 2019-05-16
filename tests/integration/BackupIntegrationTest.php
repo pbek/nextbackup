@@ -91,6 +91,12 @@ class BackupIntegrationTest extends TestCase {
         $tableExists = $this->db->tableExists( self::TEST_TABLE_NO_PREFIX );
         $this->assertFalse( $tableExists );
 
+        // restore forged table
+        $timestamp = $timestampList[0];
+        $tableList = ["../../admin/files"];
+        // this should throw an exception
+        $this->backupService->doRestoreTables( $timestamp, $tableList );
+
         // restore table
         $timestamp = $timestampList[0];
         $tableList = [self::TEST_TABLE];
