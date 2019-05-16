@@ -12,13 +12,14 @@
 namespace OCA\OwnBackup\Controller;
 
 use OCP\Security\ISecureRandom;
-use PHPUnit_Framework_TestCase;
+use \PHPUnit\Framework\TestCase;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 
 
-class AdminControllerTest extends PHPUnit_Framework_TestCase {
+class AdminControllerTest extends TestCase {
 
+    /** @var AdminController */
 	private $controller;
 
 	public function setUp() {
@@ -46,7 +47,7 @@ class AdminControllerTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($result instanceof DataResponse);
 
 		$result = $this->controller->doRestoreTables( $timestamp, array() );
-		$this->assertEquals(['message' => 'No table have been restored.'], $result->getData());
+		$this->assertEquals(['message' => 'No tables have been restored.'], $result->getData());
 	}
 
 	public function testDoFetchTables() {

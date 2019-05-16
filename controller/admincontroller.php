@@ -65,7 +65,7 @@ class AdminController extends Controller {
 		}
 		else
 		{
-			$message = "No table have been restored.";
+			$message = "No tables have been restored.";
 		}
 
 		return new DataResponse(['message' => $message]);
