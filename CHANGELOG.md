@@ -1,5 +1,8 @@
 # OwnBackup Change Log
 
+## 19.5.0
+- fixed possible remote code execution attack
+
 ## 19.4.0
 - enabled app for Nextcloud 16
 
