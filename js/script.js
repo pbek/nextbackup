@@ -14,7 +14,7 @@ console.log("ownbackup");
 	$(document).ready(function () {
 		$('#ownbackup-backup-button').click(function () {
 			console.log("ownbackup-backup-button");
-			OCdialogs.confirm(
+			OC.dialogs.confirm(
 				t('ownbackup_backup', 'Are you sure you want to create a new backup?'),
 				t('ownbackup_backup', 'Create backup?'),
 				function( confirmed )
@@ -38,7 +38,7 @@ console.log("ownbackup");
 							$('#ownbackup-cover').hide();
 							$('#ownbackup-backup-tables-block').hide();
 
-							OCdialogs.info( response.message, t('ownbackup_backup', 'New backup'), null, true );
+							OC.dialogs.info( response.message, t('ownbackup_backup', 'New backup'), function() {}, true );
 						});
 					}
 				},
@@ -60,7 +60,7 @@ console.log("ownbackup");
 
 		$('#ownbackup-restore-button').click(function (){
 
-			OCdialogs.confirm(
+			OC.dialogs.confirm(
 				t('ownbackup_restore', 'Are you sure you want to restore the selected tables?'),
 				t('ownbackup_restore', 'Restore tables?'),
 				function( confirmed )
@@ -82,7 +82,7 @@ console.log("ownbackup");
 							$('#restore-message').hide();
 							$('#ownbackup-cover').hide();
 
-							OCdialogs.info( response.message, t('ownbackup_restore', 'Tables restored'), null, true );
+							OC.dialogs.info( response.message, t('ownbackup_restore', 'Tables restored'), function() {}, true );
 						});
 					}
 				},

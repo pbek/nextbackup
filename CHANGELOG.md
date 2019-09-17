@@ -1,5 +1,9 @@
 # OwnBackup Change Log
 
+## 19.9.0
+- enabled and tested app for Nextcloud 17
+- fixed some warnings with dialogs
+
 ## 19.5.0
 - fixed possible remote code execution attack
 
