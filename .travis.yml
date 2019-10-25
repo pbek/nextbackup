@@ -5,6 +5,7 @@ php:
   - 5.6
   - 7.1
   - 7.2
+  - 7.3
   - hhvm
 
 env:
@@ -45,10 +46,10 @@ matrix:
       env: DB=mysql CORE_BRANCH=stable16
     - php: 7.2
       env: DB=mysql CORE_BRANCH=stable17
-#    - php: 7.2
-#      env: DB=mysql CORE_BRANCH=master
-#    - php: 7.2
-#      env: DB=pgsql CORE_BRANCH=master
+    - php: 7.3
+      env: DB=mysql CORE_BRANCH=stable17
+    - php: 7.3
+      env: DB=pgsql CORE_BRANCH=stable17
   fast_finish: true
 
 before_install:
