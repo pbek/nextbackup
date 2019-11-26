@@ -1,18 +1,18 @@
-# [OwnBackup](https://apps.owncloud.com/content/show.php?content=170674 "OwnBackup ownCloud App page") 
+# NextBackup
 
-[Changelog](https://github.com/pbek/ownbackup/blob/develop/CHANGELOG.md) | 
-[Issues](https://github.com/pbek/ownbackup/issues) | 
-[Download](https://github.com/pbek/ownbackup/releases) |
-[ownCloud Marketplace page](https://marketplace.owncloud.com/apps/ownbackup) |
-[Nextcloud Apps page](https://apps.nextcloud.com/apps/ownbackup)
+[Changelog](https://github.com/pbek/nextbackup/blob/develop/CHANGELOG.md) | 
+[Issues](https://github.com/pbek/nextbackup/issues) | 
+[Download](https://github.com/pbek/nextbackup/releases) |
+[ownCloud Marketplace page](https://marketplace.owncloud.com/apps/nextbackup) |
+[Nextcloud Apps page](https://apps.nextcloud.com/apps/nextbackup)
 
-[![Build Status](https://travis-ci.org/pbek/ownbackup.svg?branch=develop)](https://travis-ci.org/pbek/ownbackup)
-[![Code Climate](https://codeclimate.com/github/pbek/ownbackup/badges/gpa.svg)](https://codeclimate.com/github/pbek/ownbackup)
-[![Test Coverage](https://codeclimate.com/github/pbek/ownbackup/badges/coverage.svg)](https://codeclimate.com/github/pbek/ownbackup/coverage)
+[![Build Status](https://travis-ci.org/pbek/nextbackup.svg?branch=develop)](https://travis-ci.org/pbek/nextbackup)
+[![Code Climate](https://codeclimate.com/github/pbek/nextbackup/badges/gpa.svg)](https://codeclimate.com/github/pbek/nextbackup)
+[![Test Coverage](https://codeclimate.com/github/pbek/nextbackup/badges/coverage.svg)](https://codeclimate.com/github/pbek/nextbackup/coverage)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/04f33cd9-67b9-4a88-92d0-0c98944d1a8f/mini.png)](https://insight.sensiolabs.com/projects/04f33cd9-67b9-4a88-92d0-0c98944d1a8f)
 
 
-**OwnBackup** is the **simple database backup solution** for your **[ownCloud](http://www.owncloud.org/)** 8.1+
+**NextBackup** is the **simple database backup solution** for your **[ownCloud](http://www.owncloud.org/)** 8.1+
 and **[Nextcloud](http://www.nextcloud.com/)** installation.
 
 Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.  
@@ -22,13 +22,13 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 Clone the app into your Nextcloud / ownCloud apps directory:
 
 ```bash
-git clone https://github.com/pbek/ownbackup.git apps/ownbackup -b master
+git clone https://github.com/pbek/nextbackup.git apps/nextbackup -b master
 ```
 
 Activate the app:
 
 ```bash
-occ app:enable ownbackup
+occ app:enable nextbackup
 ```
 
 ## Screenshot
@@ -36,9 +36,9 @@ occ app:enable ownbackup
 
 ## Features
 
-- OwnBackup creates backups of your Nextcloud / ownCloud tables hourly via cronjob or manually.
+- NextBackup creates backups of your Nextcloud / ownCloud tables hourly via cronjob or manually.
 - You are able to choose which tables from a certain backup you want to restore.
-- OwnBackup expires your backups automatically.
+- NextBackup expires your backups automatically.
     - for 24h one backup every hour is kept
     - for 7d one backup per day is kept
     - for 4w one backup per week is kept
@@ -56,7 +56,6 @@ occ app:enable ownbackup
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!
-- This software is not affiliate with [www.ownbackup.com](https://www.ownbackup.com/), I'm sorry for the name clash.
 
 This SOFTWARE PRODUCT is provided by THE PROVIDER "as is" and "with all faults." THE PROVIDER makes no representations or warranties of any kind concerning the safety, suitability, lack of viruses, inaccuracies, typographical errors, or other harmful components of this SOFTWARE PRODUCT. 
 
