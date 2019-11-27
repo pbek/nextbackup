@@ -1,34 +1,34 @@
-#ownbackup-backup-tables-block {
+#nextbackup-backup-tables-block {
 	display: none;
 	margin: 10px 0;
 }
 
-#ownbackup-backup-date-select {
+#nextbackup-backup-date-select {
 	width: 250px;
 }
 
-#ownbackup-backup-tables-select {
+#nextbackup-backup-tables-select {
 	width: 300px;
 	height: auto;
 }
 
-#ownbackup .box {
+#nextbackup .box {
 	margin: 10px 0;
 }
 
-#ownbackup button.icon-button {
+#nextbackup button.icon-button {
 	padding: 4px;
 	position: relative;
 	top: 1px;
 }
 
-#ownbackup button.icon-button span {
+#nextbackup button.icon-button span {
 	display: inline-block;
 	position: relative;
 	top: 2px;
 }
 
-#ownbackup .message-box {
+#nextbackup .message-box {
 	padding: 20px;
 	top: 40%;
 	left: 40%;
@@ -39,17 +39,17 @@
 	z-index:6;
 }
 
-#ownbackup .message-box h3 {
+#nextbackup .message-box h3 {
 	font-size: 1.6em;
 	margin-bottom: 30px;
 }
 
-#ownbackup .wait-spinner {
+#nextbackup .wait-spinner {
 	height: 32px;
 	margin-top: 10px;
 }
 
-#ownbackup-cover {
+#nextbackup-cover {
 	position:fixed;
 	top:0;
 	left:0;

@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,9 +9,9 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-namespace OCA\OwnBackup\Controller;
+namespace OCA\NextBackup\Controller;
 
-use OCA\OwnBackup\Service\BackupService;
+use OCA\NextBackup\Service\BackupService;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;

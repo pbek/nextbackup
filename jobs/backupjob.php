@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,11 +9,11 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-namespace OCA\OwnBackup\Jobs;
+namespace OCA\NextBackup\Jobs;
 
 use OC\BackgroundJob\TimedJob;
-use OCA\OwnBackup\AppInfo\Application;
-use OCA\OwnBackup\Service\BackupService;
+use OCA\NextBackup\AppInfo\Application;
+use OCA\NextBackup\Service\BackupService;
 
 class BackupJob extends TimedJob
 {
@@ -28,7 +28,7 @@ class BackupJob extends TimedJob
      */
     public function run( $arguments )
     {
-        if ( !\OC::$server->getAppManager()->isInstalled( 'ownbackup' ) )
+        if ( !\OC::$server->getAppManager()->isInstalled( 'nextbackup' ) )
         {
             return;
         }
@@ -37,7 +37,7 @@ class BackupJob extends TimedJob
         $container = $app->getContainer();
 
         /** @var BackupService $backupService */
-        $backupService = $container->query('OCA\OwnBackup\Service\BackupService');
+        $backupService = $container->query('OCA\NextBackup\Service\BackupService');
 
         // check if we need a new backup
         if ( $backupService->needNewBackup() )

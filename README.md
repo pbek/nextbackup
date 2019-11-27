@@ -12,7 +12,7 @@
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/04f33cd9-67b9-4a88-92d0-0c98944d1a8f/mini.png)](https://insight.sensiolabs.com/projects/04f33cd9-67b9-4a88-92d0-0c98944d1a8f)
 
 
-**NextBackup** is the **simple database backup solution** for your **[ownCloud](http://www.owncloud.org/)** 8.1+
+**NextBackup** (formerly OwnBackup) is the **simple database backup solution** for your **[ownCloud](http://www.owncloud.org/)** 8.1+
 and **[Nextcloud](http://www.nextcloud.com/)** installation.
 
 Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.  

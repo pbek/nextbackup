@@ -11,7 +11,7 @@ php:
 env:
   global:
     - CORE_BRANCH=stable13
-    - APP_NAME=ownbackup
+    - APP_NAME=nextbackup
   matrix:
     - DB=pgsql
 
@@ -81,7 +81,7 @@ before_script:
   - mkdir data
   - ./occ maintenance:install --database-name oc_autotest --database-user oc_autotest --admin-user admin --admin-pass admin --database $DB --database-pass=''
   - ./occ app:enable $APP_NAME
-  # the api ownbackup is using is deprecated since NC 14
+  # the api nextbackup is using is deprecated since NC 14
   #- ./occ app:check-code $APP_NAME
   - ./occ background:cron  # enable default cron
   - php -S localhost:8080 &

@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,7 +9,7 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-use OCA\OwnBackup\AppInfo\Application;
+use OCA\NextBackup\AppInfo\Application;
 use Test\TestCase;
 
 
@@ -31,15 +31,15 @@ class AppTest extends TestCase {
 
     public function testAppInstalled() {
         $appManager = $this->container->query('OCP\App\IAppManager');
-        $this->assertTrue($appManager->isInstalled('ownbackup'));
+        $this->assertTrue($appManager->isInstalled('nextbackup'));
     }
 
     /**
-     * Tests the OwnBackup admin section
+     * Tests the NextBackup admin section
      */
     public function testAdminSection() {
         $resultHtml = include "admin.php";
-        $this->assertContains( '<div id="ownbackup">', $resultHtml );
+        $this->assertContains( '<div id="nextbackup">', $resultHtml );
         $this->assertContains( '<div class="section">', $resultHtml );
     }
 }

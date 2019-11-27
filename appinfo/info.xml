@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
     <!-- metadata -->
-    <id>ownbackup</id>
-    <name>OwnBackup</name>
+    <id>nextbackup</id>
+    <name>NextBackup</name>
     <summary>Simple database backup solutions for your ownCloud 8.1+ or Nextcloud installation.</summary>
-    <description><![CDATA[OwnBackup is the simple database backup solution for your ownCloud 8.1+ or Nextcloud installation.
+    <description><![CDATA[NextBackup is the simple database backup solution for your ownCloud 8.1+ or Nextcloud installation.
 
 Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!]]></description>
-    <version>19.9.0</version>
+    <version>19.11.0</version>
     <licence>agpl</licence>
     <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
-    <namespace>OwnBackup</namespace>
+    <namespace>NextBackup</namespace>
 
     <!-- documentation -->
     <documentation>
-        <admin>https://github.com/pbek/ownbackup</admin>
+        <admin>https://github.com/pbek/nextbackup</admin>
     </documentation>
 
     <!-- resources -->
     <category>tools</category>
-    <website>https://github.com/pbek/ownbackup</website>
-    <bugs>https://github.com/pbek/ownbackup/issues</bugs>
-    <repository type="git">https://github.com/pbek/ownbackup.git</repository>
-    <screenshot>https://raw.githubusercontent.com/pbek/ownbackup/develop/screenshot.png</screenshot>
+    <website>https://github.com/pbek/nextbackup</website>
+    <bugs>https://github.com/pbek/nextbackup/issues</bugs>
+    <repository type="git">https://github.com/pbek/nextbackup.git</repository>
+    <screenshot>https://raw.githubusercontent.com/pbek/nextbackup/develop/screenshot.png</screenshot>
 
     <!-- dependencies -->
     <dependencies>
@@ -34,12 +34,12 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
         <database>sqlite</database>
         <database>mysql</database>
         <lib>zlib</lib>
-        <owncloud min-version="8.2" max-version="11" />
-        <nextcloud min-version="10" max-version="17" />
+        <owncloud min-version="8.2" max-version="12" />
+        <nextcloud min-version="10" max-version="18" />
     </dependencies>
 
     <!-- cron jobs -->
     <background-jobs>
-        <job>OCA\OwnBackup\Jobs\BackupJob</job>
+        <job>OCA\NextBackup\Jobs\BackupJob</job>
     </background-jobs>
 </info>

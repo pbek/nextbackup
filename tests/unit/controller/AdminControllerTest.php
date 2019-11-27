@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,7 +9,7 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-namespace OCA\OwnBackup\Controller;
+namespace OCA\NextBackup\Controller;
 
 use OCP\Security\ISecureRandom;
 use \PHPUnit\Framework\TestCase;
@@ -24,9 +24,9 @@ class AdminControllerTest extends TestCase {
 
 	public function setUp() {
 		$request = $this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock();
-		$backupService = $this->getMockBuilder('OCA\OwnBackup\Service\BackupService')->disableOriginalConstructor()->getMock();
+		$backupService = $this->getMockBuilder('OCA\NextBackup\Service\BackupService')->disableOriginalConstructor()->getMock();
 
-		$this->controller = new AdminController( 'ownbackup', $request, $backupService );
+		$this->controller = new AdminController( 'nextbackup', $request, $backupService );
 	}
 
 	public function testIndex() {

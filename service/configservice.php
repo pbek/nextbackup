@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -8,7 +8,7 @@
  * @author Patrizio Bekerle <patrizio@bekerle.com>
  * @copyright Patrizio Bekerle 2015
  */
-namespace OCA\OwnBackup\Service;
+namespace OCA\NextBackup\Service;
 
 use Exception;
 use \OCP\IConfig;
@@ -37,7 +37,7 @@ class ConfigService {
      * @throws Exception
      */
     public function getBackupBaseDirectory() {
-        $backupDir = $this->getDataDir() . '/ownbackup';
+        $backupDir = $this->getDataDir() . '/nextbackup';
 
         // create new base backup folder if it not exists
         if ( !file_exists( $backupDir ) )

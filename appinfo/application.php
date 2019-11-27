@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,16 +9,16 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-namespace OCA\OwnBackup\AppInfo;
+namespace OCA\NextBackup\AppInfo;
 
 use OCP\AppFramework\App;
-use OCA\OwnBackup\Controller\AdminController;
+use OCA\NextBackup\Controller\AdminController;
 
 class Application extends App
 {
     public function __construct(array $urlParams = [])
     {
-        parent::__construct('ownbackup', $urlParams);
+        parent::__construct('nextbackup', $urlParams);
 
         $container = $this->getContainer();
         $container->registerService('AdminController', function($c) {
@@ -33,7 +33,7 @@ class Application extends App
     public function registerSettings() {
         // Register settings scripts
         // TODO: implement with new admin system?
-        \OCP\App::registerAdmin('ownbackup', 'admin');
+        \OCP\App::registerAdmin('nextbackup', 'admin');
     }
 
 }

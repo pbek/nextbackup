@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,7 +9,7 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-namespace OCA\OwnBackup\AppInfo;
+namespace OCA\NextBackup\AppInfo;
 
 $application = new Application();
 

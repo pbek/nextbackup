@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,11 +9,11 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-namespace OCA\OwnBackup\AppInfo;
+namespace OCA\NextBackup\AppInfo;
 
-use OCA\OwnBackup\Jobs\BackupJob;
+use OCA\NextBackup\Jobs\BackupJob;
 
-// I need this line so OwnBackup shows up in ownCloud 8.1.1, but in my ownCloud 8.1.1 development version from git
+// I need this line so NextBackup shows up in ownCloud 8.1.1, but in my ownCloud 8.1.1 development version from git
 // it shows up two times because of it
 $app = new Application();
 $app->registerSettings();

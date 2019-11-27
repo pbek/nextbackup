@@ -1,5 +1,5 @@
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -7,38 +7,38 @@
  * @author Patrizio Bekerle <patrizio@bekerle.com>
  * @copyright Patrizio Bekerle 2015
  */
-console.log("ownbackup");
+console.log("nextbackup");
 
 (function ($, OC) {
 
 	$(document).ready(function () {
-		$('#ownbackup-backup-button').click(function () {
-			console.log("ownbackup-backup-button");
+		$('#nextbackup-backup-button').click(function () {
+			console.log("nextbackup-backup-button");
 			OC.dialogs.confirm(
-				t('ownbackup_backup', 'Are you sure you want to create a new backup?'),
-				t('ownbackup_backup', 'Create backup?'),
+				t('nextbackup_backup', 'Are you sure you want to create a new backup?'),
+				t('nextbackup_backup', 'Create backup?'),
 				function( confirmed )
 				{
 					if ( confirmed )
 					{
-						var url = OC.generateUrl('/apps/ownbackup/create-backup');
+						var url = OC.generateUrl('/apps/nextbackup/create-backup');
 
 						// show a message
-						$('#ownbackup-backup-message').show();
-						$('#ownbackup-cover').show();
+						$('#nextbackup-backup-message').show();
+						$('#nextbackup-cover').show();
 
 						$.post(url).success(function (response) {
 							console.log(response);
 
 							// update the backup date selector
-							updateSelectorHashItems( $('#ownbackup-backup-date-select'), response.timestamps, true, true );
+							updateSelectorHashItems( $('#nextbackup-backup-date-select'), response.timestamps, true, true );
 
 							// hide message
-							$('#ownbackup-backup-message').hide();
-							$('#ownbackup-cover').hide();
-							$('#ownbackup-backup-tables-block').hide();
+							$('#nextbackup-backup-message').hide();
+							$('#nextbackup-cover').hide();
+							$('#nextbackup-backup-tables-block').hide();
 
-							OC.dialogs.info( response.message, t('ownbackup_backup', 'New backup'), function() {}, true );
+							OC.dialogs.info( response.message, t('nextbackup_backup', 'New backup'), function() {}, true );
 						});
 					}
 				},
@@ -46,43 +46,43 @@ console.log("ownbackup");
 			);
 		});
 
-		$('#ownbackup-select-all-tables-button').click(function () {
-			var $select = $('#ownbackup-backup-tables-select');
+		$('#nextbackup-select-all-tables-button').click(function () {
+			var $select = $('#nextbackup-backup-tables-select');
 			$select.find('option').attr('selected', 'selected');
 			$select.trigger('chosen:updated');
 		});
 
-		$('#ownbackup-deselect-all-tables-button').click(function () {
-			var $select = $('#ownbackup-backup-tables-select');
+		$('#nextbackup-deselect-all-tables-button').click(function () {
+			var $select = $('#nextbackup-backup-tables-select');
 			$select.find('option:selected').removeAttr('selected');
 			$select.trigger('chosen:updated');
 		});
 
-		$('#ownbackup-restore-button').click(function (){
+		$('#nextbackup-restore-button').click(function (){
 
 			OC.dialogs.confirm(
-				t('ownbackup_restore', 'Are you sure you want to restore the selected tables?'),
-				t('ownbackup_restore', 'Restore tables?'),
+				t('nextbackup_restore', 'Are you sure you want to restore the selected tables?'),
+				t('nextbackup_restore', 'Restore tables?'),
 				function( confirmed )
 				{
 					if ( confirmed )
 					{
 						// show a message
 						$('#restore-message').show();
-						$('#ownbackup-cover').show();
+						$('#nextbackup-cover').show();
 
-						var url = OC.generateUrl('/apps/ownbackup/restore-tables');
+						var url = OC.generateUrl('/apps/nextbackup/restore-tables');
 						var data = {
-							timestamp: $('#ownbackup-backup-date-select').val(),
-							tables: $('#ownbackup-backup-tables-select').val()
+							timestamp: $('#nextbackup-backup-date-select').val(),
+							tables: $('#nextbackup-backup-tables-select').val()
 						};
 
 						$.post(url, data).success(function (response) {
 							// hide message
 							$('#restore-message').hide();
-							$('#ownbackup-cover').hide();
+							$('#nextbackup-cover').hide();
 
-							OC.dialogs.info( response.message, t('ownbackup_restore', 'Tables restored'), function() {}, true );
+							OC.dialogs.info( response.message, t('nextbackup_restore', 'Tables restored'), function() {}, true );
 						});
 					}
 				},
@@ -90,7 +90,7 @@ console.log("ownbackup");
 			);
 		});
 
-		$('#ownbackup-backup-date-select').change( function() {
+		$('#nextbackup-backup-date-select').change( function() {
 			var timestamp = parseInt( $(this).val() );
 
 			if ( timestamp == 0 )
@@ -98,14 +98,14 @@ console.log("ownbackup");
 				return;
 			}
 
-			var url = OC.generateUrl('/apps/ownbackup/fetch-tables');
+			var url = OC.generateUrl('/apps/nextbackup/fetch-tables');
 			var data = {
 				timestamp: timestamp
 			};
 
 			$.post(url, data).success(function (response) {
-				$('#ownbackup-backup-tables-block').show();
-				updateSelectorArrayItems( $('#ownbackup-backup-tables-select'), response.tables, false );
+				$('#nextbackup-backup-tables-block').show();
+				updateSelectorArrayItems( $('#nextbackup-backup-tables-select'), response.tables, false );
 			});
 		} );
 

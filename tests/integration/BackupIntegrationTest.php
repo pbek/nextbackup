@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,8 +9,8 @@
  * @copyright Patrizio Bekerle 2015
  */
 
-use OCA\OwnBackup\Service\BackupService;
-use OCA\OwnBackup\AppInfo\Application;
+use OCA\NextBackup\Service\BackupService;
+use OCA\NextBackup\AppInfo\Application;
 use OCP\IDBConnection;
 use Test\TestCase;
 
@@ -40,7 +40,7 @@ class BackupIntegrationTest extends TestCase {
         $app = new Application();
         $this->container = $app->getContainer();
 
-        $this->backupService = $this->container->query('OCA\OwnBackup\Service\BackupService');
+        $this->backupService = $this->container->query('OCA\NextBackup\Service\BackupService');
         $this->db = $this->container->query('OCP\IDBConnection');
     }
 
@@ -214,7 +214,7 @@ class BackupIntegrationTest extends TestCase {
 /**
  * Class BackupServiceToTest extends the original class to make it possible to test protected methods
  */
-class BackupServiceToTest extends OCA\OwnBackup\Service\BackupService
+class BackupServiceToTest extends OCA\NextBackup\Service\BackupService
 {
     /**
      * @param integer[] $timestamps list of timestamps

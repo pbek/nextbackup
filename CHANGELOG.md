@@ -1,4 +1,7 @@
-# OwnBackup Change Log
+# NextBackup Change Log
+
+## 19.11.0
+- application was renamed to NextBackup because of trademark infringement with ownbackup.com
 
 ## 19.9.0
 - enabled and tested app for Nextcloud 17
@@ -27,7 +30,7 @@
 
 ## 17.5.0
 - migrated from IDB to IDBConnection for Nextcloud 12
-  (for [Issue #17](https://github.com/pbek/ownbackup/issues/17))
+  (for [Issue #17](https://github.com/pbek/nextbackup/issues/17))
 - enabled and tested app for ownCloud 10 and Nextcloud 12
 
 ## 17.3.0
@@ -35,7 +38,7 @@
 
 ## 16.11.0
 - fixed an `internal server error` on ownCloud 9.1.2
-  (for [Issue #7](https://github.com/pbek/ownbackup/issues/7))
+  (for [Issue #7](https://github.com/pbek/nextbackup/issues/7))
 - added a notice to setup a cronjob to get periodic backups
 - switched release versioning to a more *rolling release style*,
   so it doesn't get confused with semantic versioning
@@ -73,11 +76,11 @@
 - fixed some logging issues
 
 ## v0.3.2
-- fixed the problem that OwnBackup might be shown twice in the admin menu
+- fixed the problem that NextBackup might be shown twice in the admin menu
 - fixed all compliance issues
 
 ## v0.3.1
-- tried to fix a problem with the OwnBackup section not showing up on the admin page
+- tried to fix a problem with the NextBackup section not showing up on the admin page
 
 ## v0.3
 - re-implemented the backup and restore page in the admin section

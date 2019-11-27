@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - ownbackup
+ * ownCloud - nextbackup
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -8,7 +8,7 @@
  * @author Patrizio Bekerle <patrizio@bekerle.com>
  * @copyright Patrizio Bekerle 2015
  */
-namespace OCA\OwnBackup\Service;
+namespace OCA\NextBackup\Service;
 
 use Exception;
 use OCP\IDBConnection;
@@ -59,7 +59,7 @@ class BackupService {
         $this->odb = $odb;
         $this->configService = $configService;
         $this->logger = $logger;
-        $this->logContext = ['app' => 'ownbackup'];
+        $this->logContext = ['app' => 'nextbackup'];
         $this->userId = $userId;
         $this->db = $db;
     }
