@@ -37,7 +37,7 @@ class ConfigService {
      * @throws Exception
      */
     public function getBackupBaseDirectory() {
-        $backupDir = $this->getDataDir() . '/nextbackup';
+        $backupDir = $this->getDataDir() . '/ownbackup';
 
         // create new base backup folder if it not exists
         if ( !file_exists( $backupDir ) )
