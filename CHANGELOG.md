@@ -2,6 +2,7 @@
 
 ## 19.11.0
 - application was renamed to NextBackup because of trademark infringement with ownbackup.com
+    - the backup path still is `ownbackup` for backward compatibility
 
 ## 19.9.0
 - enabled and tested app for Nextcloud 17
