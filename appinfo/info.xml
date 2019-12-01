@@ -4,13 +4,13 @@
     <id>nextbackup</id>
     <name>NextBackup</name>
     <summary>Simple database backup solutions for your ownCloud 8.1+ or Nextcloud installation.</summary>
-    <description><![CDATA[NextBackup is the simple database backup solution for your ownCloud 8.1+ or Nextcloud installation.
+    <description><![CDATA[NextBackup (formerly OwnBackup) is the simple database backup solution for your ownCloud 8.1+ or Nextcloud installation.
 
 Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!]]></description>
-    <version>19.12.0</version>
+    <version>19.12.1</version>
     <licence>agpl</licence>
     <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
     <namespace>NextBackup</namespace>
