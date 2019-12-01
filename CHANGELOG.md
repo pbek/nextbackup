@@ -1,6 +1,6 @@
 # NextBackup Change Log
 
-## 19.11.0
+## 19.12.0
 - application was renamed to NextBackup because of trademark infringement with ownbackup.com
     - the backup path still is `ownbackup` for backward compatibility
 
