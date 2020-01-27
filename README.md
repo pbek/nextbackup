@@ -36,7 +36,7 @@ occ app:enable nextbackup
 
 ## Features
 
-- NextBackup creates backups of your Nextcloud / ownCloud tables hourly via cronjob or manually.
+- NextBackup creates backups of your Nextcloud / ownCloud tables hourly via your Nextcloud / ownCloud cronjob or manually.
 - You are able to choose which tables from a certain backup you want to restore.
 - NextBackup expires your backups automatically.
     - for 24h one backup every hour is kept
