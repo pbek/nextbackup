@@ -31,6 +31,12 @@ Activate the app:
 occ app:enable nextbackup
 ```
 
+The app will **automatically start running** from this point onward and will create a backup (approximately) every hour. **No additional configuration** is needed for that.
+
+The only requirement is properly working background jobs, which are needed for a correctly working installation anyway. You'll find instructions on how to do this in the administration manuals ([Nextcloud](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html?highlight=cron), [ownCloud](https://doc.owncloud.com/server/admin_manual/configuration/server/background_jobs_configuration.html)).
+
+You'll find options to restore from previous backups and also to trigger the creation of new backups in the administration settings. See below screenshots for details.
+
 ## Screenshot
 ![Screenhot](screenshot.png)
 
