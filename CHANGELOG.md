@@ -1,5 +1,8 @@
 # NextBackup Change Log
 
+## 20.4.0
+- enabled app for Nextcloud 19/20
+
 ## 19.12.1
 - update `info.xml` to mention OwnBackup
  

@@ -3,14 +3,14 @@
     <!-- metadata -->
     <id>nextbackup</id>
     <name>NextBackup</name>
-    <summary>Simple database backup solutions for your ownCloud 8.1+ or Nextcloud installation.</summary>
-    <description><![CDATA[NextBackup (formerly OwnBackup) is the simple database backup solution for your ownCloud 8.1+ or Nextcloud installation.
+    <summary>Simple database backup solutions for your Nextcloud or ownCloud installation.</summary>
+    <description><![CDATA[NextBackup (formerly OwnBackup) is the simple database backup solution for your Nextcloud or ownCloud installation.
 
 Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!]]></description>
-    <version>19.12.1</version>
+    <version>20.4.0</version>
     <licence>agpl</licence>
     <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
     <namespace>NextBackup</namespace>
@@ -35,7 +35,7 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
         <database>mysql</database>
         <lib>zlib</lib>
         <owncloud min-version="8.2" max-version="11" />
-        <nextcloud min-version="10" max-version="18" />
+        <nextcloud min-version="10" max-version="20" />
     </dependencies>
 
     <!-- cron jobs -->
