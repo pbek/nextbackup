@@ -1,5 +1,8 @@
 # NextBackup Change Log
 
+## 20.7.0
+- made metadata adaptions for ownCloud because of marketplace restrictions
+
 ## 20.4.0
 - enabled app for Nextcloud 19/20
 
