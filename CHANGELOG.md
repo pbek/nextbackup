@@ -1,5 +1,8 @@
 # NextBackup Change Log
 
+## 20.9.0
+- Nextcloud store certificate changes (for [#46](https://github.com/pbek/nextbackup/issues/46))
+
 ## 20.7.0
 - made metadata adaptions for ownCloud because of marketplace restrictions
 
