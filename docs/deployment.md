@@ -3,8 +3,6 @@
 ## Prerequisites
 
 - Copy your app certificate files to `./docker/nextcloud/certificates`
-    - Take a look at [nextbackup.md](https://gitlab.tugraz.at/vpu-private/vpu-docs-private/-/blob/master/docs/projects/nextbackup.md)
-      on how to get the files
 
 ### Signing and releasing
 
