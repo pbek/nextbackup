@@ -10,7 +10,7 @@ Its main purpose is to provide an easy solution to restore the tables of an app 
 
 - Use this app at your own risk! Data loss may occur!
 - This app is no replacement for a more professional backup solution!]]></description>
-    <version>20.9.0</version>
+    <version>21.1.0</version>
     <licence>agpl</licence>
     <author mail="patrizio@bekerle.com" homepage="http://www.bekerle.com/">Patrizio Bekerle</author>
     <namespace>NextBackup</namespace>
