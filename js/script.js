@@ -110,7 +110,6 @@ console.log("nextbackup");
 		} );
 
 		$('.chosen-select').chosen();
-		$('button.icon-button').tipsy();
 	});
 
 	/**

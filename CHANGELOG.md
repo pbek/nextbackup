@@ -1,5 +1,8 @@
 # NextBackup Change Log
 
+## 21.1.0
+- fixed a problem where *Group folders* app admin screen wasn't shown if *Nextbackup* was also installed
+
 ## 20.9.0
 - Nextcloud store certificate changes (for [#46](https://github.com/pbek/nextbackup/issues/46))
 
