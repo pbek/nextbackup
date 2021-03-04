@@ -1,5 +1,6 @@
 .idea/
 build/
 docker/nextcloud/certificates/nextbackup.*
+docker/owncloud/certificates/nextbackup.*
 *.gz
 *.db*
