@@ -17,7 +17,9 @@ and **[Nextcloud](http://www.nextcloud.com/)** installation.
 
 Its main purpose is to provide an easy solution to restore the tables of an app in case you accidentally corrupted the data or did anything you regret later.  
 
-**NextBackup is currently not compatible with Nextcloud 21+!**
+**Beware**: This application depends on private (now partly deprecated) ownCloud / Nextcloud API and only works as good as this API!
+
+**NextBackup is not compatible with Nextcloud 21+!**
 See [#50](https://github.com/pbek/nextbackup/issues/50) for more information.
 
 ## Installation
